@@ -1,0 +1,49 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.PlantInsta" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryVariant</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/onboardingcolor</item>
+        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/teal_200</item>
+        <!-- Status bar color. -->
+
+        <item name="actionOverflowMenuStyle">@style/CMOptionsMenu</item>
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="CMOptionsMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:popupBackground">#ffffff</item>
+        <item name="android:actionBarSize">5dp</item>
+
+    </style>
+    <style name="Theme.Signinup">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
+
+    <style name="Theme.Signinup.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- Alert Dialog -->
+    <style name="MyThemeOverlayAlertDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MyApp.Dialog.Rounded</item>
+    </style>
+    <style name="ShapeAppearanceOverlay.MyApp.Dialog.Rounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">18dp</item>
+    </style>
+
+    <style name="Theme"></style>
+    <style name="roundedImageViewRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+</resources>

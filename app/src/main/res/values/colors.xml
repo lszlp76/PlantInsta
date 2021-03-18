@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#880E4F</color>
+    <color name="onboardingcolor">#DEDEDE</color>
+    <color name="purple_500">#fd558f</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#ff4081</color>
+    <color name="teal_700">#ff79b0</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFffffff</color>
+    <color name="turkuaz">#880e4f</color>
+    <color name="primaryColor">#f57c00</color>
+    <color name="primaryVariant">#f57c00</color>
+    <color name="primaryDarkColor">#bb4d00</color>
+    <color name="secondaryColor">#880e4f</color>
+    <color name="secondaryLightColor">#bc477b</color>
+    <color name="secondaryDarkColor">#560027</color>
+    <color name="primaryTextColor">#689f38</color>
+    <color name="secondaryTextColor">#689f38</color>
+    <color name="colorSplash">#eeffff</color>
+    <color name="windowbackground">#ffffff</color>
+    <color name="navigationBarcolor">#FCE4EC</color>
+    <color name="textColorPlantinsta">#808e95</color>
+
+</resources>

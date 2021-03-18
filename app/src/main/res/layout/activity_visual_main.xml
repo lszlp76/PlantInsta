@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.zlpls.plantinsta.visualselection.VisualMainActivity">
+    <!-- EKRAN SINIRLARINI AYARLAYAN KILAVUZLAR-->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/left_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".00" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/right_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1.00" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".00" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1.0" />
+
+    <!-- EKRAN SINIRLARINI AYARLAYAN KILAVUZLAR SONU -->
+
+    <!-- EKRAN YERLEŞİMİ BURADA BAŞLIYOR
+
+    GÖNDERİLECEK RESİM RELATİVE LAYOUT İÇİNDE OLACAK
+    ekranın yarısı resim yarısı galeri/kamera seçim ekranı olacak
+-->
+
+
+    <!--aPP BAR BURDA -->
+    <!--
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.GalleryViewer.AppBarOverlay"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        tools:layout_editor_absoluteX="0dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="?actionBarSize"
+            android:padding="@dimen/appbar_padding"
+            android:text="@string/app_name"
+            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+            tools:layout_editor_absoluteX="3dp"
+            tools:layout_editor_absoluteY="370dp" />
+    </com.google.android.material.appbar.AppBarLayout>
+-->
+    <!--APP BAR SONU -->
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintHeight_percent="0.94"
+
+        tools:ignore="MissingConstraints" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:textAlignment="center"
+
+        app:layout_constraintTop_toBottomOf="@id/view_pager"
+        app:tabGravity="fill"
+        app:tabIconTint="@color/colorPrimaryDark"
+
+        app:tabIndicatorColor="@color/white"
+        app:tabIndicatorFullWidth="true"
+        app:tabIndicatorHeight="5dp"
+        app:tabMaxWidth="0dp"
+        app:tabMode="fixed"
+        app:tabTextColor="@color/white" />
+
+    <!-- Galeri ve Kameranın olacağı yer -->
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

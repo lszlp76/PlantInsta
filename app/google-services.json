@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "494072390513",
+    "project_id": "plantinsta-7379f",
+    "storage_bucket": "plantinsta-7379f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494072390513:android:2c7680b01e4c96e05e8cd0",
+        "android_client_info": {
+          "package_name": "com.zlpls.plantinsta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494072390513-1j9c09scbmv6rm0gbulsrauqubm9taks.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zlpls.plantinsta",
+            "certificate_hash": "13ef27562cf49869b7e8681c6cadbc7d54da3eef"
+          }
+        },
+        {
+          "client_id": "494072390513-9uc5rva4mnoedo1df62519nqoeatd4at.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy-l9RkysfbfLWKUZyrbPdctfVGMYCKzM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494072390513-9uc5rva4mnoedo1df62519nqoeatd4at.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

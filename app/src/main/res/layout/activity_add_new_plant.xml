@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddNewPlant">
+    <TextView
+        android:id="@+id/yenigunluk"
+        android:gravity="center"
+        android:text="Yeni Günlük Oluşturma"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintWidth_percent="0.90"
+        android:layout_marginTop="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
+        android:ems="10"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/newplantimageview"
+        android:hint="Yeni bitki ismi girin"
+        android:inputType="textPersonName"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/newplantimageview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/yenigunluk"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintWidth_percent="1.00"
+        android:onClick="chooseImage"
+        app:srcCompat="@drawable/logo"
+     />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName3"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.90"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
+        android:ems="10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/newplantimageview"
+        android:hint="Günlük adı"
+        android:textColor="@color/textColorPlantinsta"
+        android:textStyle="italic|bold"
+        android:textSize="16sp"
+
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName4"
+        android:layout_width="0dp"
+        android:layout_height="97dp"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:ems="10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="16sp"
+        android:textColor="@color/textColorPlantinsta"
+        android:hint="Notlarınız..."
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:maxLines="3"
+        app:layout_constraintTop_toBottomOf="@id/editTextTextPersonName3"
+        app:layout_constraintWidth_percent="0.90"
+        tools:layout_editor_absoluteX="12sp" />
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="324dp"
+        android:layout_height="16dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="50dp"
+
+        android:ems="10"
+        app:layout_constraintBottom_toBottomOf="@+id/include2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextTextPersonName4"
+        />
+
+    <include
+        android:id="@+id/include2"
+        layout="@layout/background"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

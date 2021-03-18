@@ -1,0 +1,31 @@
+
+
+
+FEEED SAYFASI HAZIRLANACAK.(AKTİVİTE /FRAGMAN )HANGİSİ İLE YPARSA
+GOOGLE SİGNUP HATALI DUZELECEK.
+MENU BUTONLARI ÇALIŞMIYOR DÜZELECEK
+
+
+
+** Fragman ekleme adımları *** g
+tüm dosyalar vısualselection altında olacak
+galeryviewr kopyalama proseduru
+1 pciture modeli oluştur.
+2 imagevieveradapre oluştur
+2' fragmanlar için bir tanae mainactivity lazım visualmainactivity olarak getir.
+3 layoutları getir.
+4 main acitivity getir
+
+
+ÖNEMLİ NOT: picasso operasyonunu fit ile yaptığın zaman fullimage aktivitesinde resmi göstermiyor.
+fit 'i kaldırınca düzeldi.
+ama galeryfragment tarafında aynı problem var, fit'i kaldırmama rağmen devam ediyor.resize yapıp
+denedim gene olmadı.
+picasso da resmin gösterildiği imageview width ve heigth 'ı wrap content yaparsan resim göstermiyorr'
+dosya yazım şekline dikkat --> {file: /storage/    burada : ile / arasında boşluk var.
+{file:/storage/  --> bu şekilde denedim . Sonuç pozitif. Hatanın kaynağı dosya yolunun yazımında
+hata yapılması. AMK
+
+
+SPLASH SCREEN yaratmak için,
+https://hasibezafer.medium.com/splash-screen-olu%C5%9Fturman%C4%B1n-do%C4%9Fru-y%C3%B6ntemi-401bbbcab0a9

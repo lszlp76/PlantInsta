@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    app:cardBackgroundColor="#e1f5fe"
+    app:cardCornerRadius="15dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp">
+
+        <!--com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/plantavatarpicture"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            android:textColor="@color/secondaryColor"
+            android:layout_centerVertical="true"
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+            app:strokeColor="#00e676"
+            app:strokeWidth="0.2dp" /-->
+        <ImageView
+            android:id="@+id/plantavatarpicture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerInside"
+
+            android:textColor="@color/colorPrimaryDark" />
+
+        <TextView
+            android:id="@+id/plantnametext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/plantavatarpicture"
+            android:maxLines="1"
+            android:text="Title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/plantfirstdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/plantnametext"
+
+            android:text="30.12.2010"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/plantpostnumber"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_below="@id/plantfirstdate"
+
+
+
+            android:text="0 Günce"
+            android:textColor="@color/secondaryColor"
+            android:textSize="12sp"
+            android:visibility="invisible" />
+
+        <!--ImageView
+            android:id="@+id/garbageicon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_delete"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" /-->
+
+
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

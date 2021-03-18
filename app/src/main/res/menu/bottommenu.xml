@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_gunluk"
+        android:title="Günlüklerim"
+         />
+
+    <item
+        android:id="@+id/photo"
+        android:icon="@drawable/ic_camera"
+        android:title="Ekle" />
+
+
+    <item
+        android:id="@+id/menu"
+        android:icon="@drawable/ic_baseline_more_horiz_24"
+        android:title="Menu"
+        android:iconTint="@color/primaryColor" />
+
+
+
+
+</menu>

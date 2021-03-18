@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_ciceksvg">
+
+    <!-- Note: A RecyclerView can also be used -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+
+        android:paddingBottom="100dp">
+        <!--androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            /-->
+        <!-- Scrollable content -->
+    </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/plantlistrecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"
+            android:scrollbars="vertical" />
+
+
+    </RelativeLayout>
+
+    <include layout="@layout/background"></include>
+
+
+    <!--com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottommenu"
+        app:navigationIcon="@drawable/ic_signouticon" /-->
+
+    <!--com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button"
+        android:layout_width="96dp"
+        android:layout_height="70dp"
+        android:layout_gravity=""
+        android:elevation="10dp"
+        android:foreground="@drawable/ic_papatya"
+        app:backgroundTint="@color/white"
+        app:fabSize="normal"
+        app:layout_anchor="@id/bottomAppBar"
+        app:tint="@null" /-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -121,21 +121,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
 
-    <!--Button
+    <Button
         android:id="@+id/sign_in_button_Google"
         android:layout_width="310dp"
         android:layout_height="45dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/roundablebutton"
-        android:backgroundTint="@color/turkuaz"
-        android:textColor="#FFFFFF"
+        android:backgroundTint="@color/primaryColor"
+        android:onClick="signInWithGoogle"
         android:text="Google ile giriş"
+        android:textColor="#FFFFFF"
         app:icon="@drawable/googleicon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
 
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" /-->
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
 
     <TextView

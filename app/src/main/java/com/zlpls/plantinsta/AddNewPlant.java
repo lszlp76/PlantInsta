@@ -344,7 +344,8 @@ public class AddNewPlant extends AppCompatActivity {
 
                                         @Override
                                         //veritabanına yazma buradan olacak
-                                        public void onSuccess(Uri uri) {
+                                        public void onSuccess(Uri uri)
+                                        {
 
                                             //storage a yazma başarılı olursa resimin url sini
                                             // alarak , cloud firestore a gönderilecek

@@ -129,8 +129,8 @@ public class PlantList extends AppCompatActivity {
         adapter = new com.zlpls.plantinsta.AddPlantAdapter(options);
         RecyclerView recyclerView = findViewById(R.id.plantlistrecyclerview);
         recyclerView.setHasFixedSize(true);
-       //recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL));
+       recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL));
 
 
         recyclerView.setAdapter(adapter);

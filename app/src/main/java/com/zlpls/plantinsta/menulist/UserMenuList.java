@@ -104,12 +104,15 @@ public class UserMenuList extends AppCompatActivity {
 
                     case 5: //çıkış
                         mAuth = FirebaseAuth.getInstance();
-                        System.out.println("Kullanıcı cıkıs: " + mAuth.getCurrentUser());
-                        mAuth.signOut();
+                        //System.out.println("Kullanıcı cıkıs: " + mAuth.getCurrentUser());
+
                         Intent plantinstaweblink = new Intent(UserMenuList.this, MainActivity.class);
                         plantinstaweblink.addFlags(FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(plantinstaweblink);
                         finishAffinity();
+                        //permission denied hatası çözümü için signOut en son operasyon olarak
+                        // göstermek yeterli oluyor
+                        mAuth.signOut();
                         break;
                     case 4://neselibahce
                         link = "https://www.hepsiburada.com/magaza/neseli-bahce";

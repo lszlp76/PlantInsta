@@ -6,10 +6,14 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.zlpls.plantinsta.R;
@@ -40,13 +44,17 @@ public class VisualMainActivity extends AppCompatActivity {
         String title = "PlantInsta Foto Ekle";
         actionBar.setTitle(title);
         getSupportActionBar().setTitle(title);
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+/*
+ if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_CODE);
+     ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+             REQUEST_CODE);
 
 
-        }
+ }
+*/
+
+
         ViewPager viewPager = findViewById(R.id.view_pager);
         //viewPager.setAdapter(sectionsPagerAdapter);
         viewPageAdapter = new ViewPageAdapter(getSupportFragmentManager());
@@ -78,10 +86,20 @@ fab.setOnClickListener(new View.OnClickListener() {
         });
 
  */
-
-
-
     }
+/*
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+       String TAG = "TAKİP";
+        if ( requestCode == 1){
+            if ( grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Log.d(TAG, "VisualActivy izini ");
+            }
+        }
 
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+    */
 
 }

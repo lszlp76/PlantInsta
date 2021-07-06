@@ -35,7 +35,7 @@ public class UserActions {
     public static String TAG = " sonuçlar";
     public static FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static Context context;
-    public static ArrayList<Integer> postCount;
+    public static int postCount;
     public static int fromList;
     public static String plantNameToModify;
     private static ArrayList<PlantModel> plantdata;
@@ -84,7 +84,7 @@ public class UserActions {
 
     public int getPostCountValue() {
 
-        postCountValue = postCount.get(0);
+        postCountValue = postCount;
 
         return postCountValue;
     }
@@ -107,7 +107,7 @@ public class UserActions {
          * 1 azaltır
          */
 
-        postCount = new ArrayList<>();
+        //postCount = new ArrayList<>();
         try {
             CollectionReference plantReference = db.collection("Plants");
 
@@ -121,15 +121,15 @@ public class UserActions {
 
                     } else {
                         List<PlantModel> plantList = value.toObjects(PlantModel.class);
-                        postCount.add(Integer.parseInt(plantList.get(0).getPlantPostCount()));
+                        postCount=(Integer.parseInt(plantList.get(0).getPlantPostCount()));
 
                         if (type == "add") {
-                            upgradeCounterFor(postCount.get(0), plantname, "add");
+                            upgradeCounterFor(postCount, plantname, "add");
 
                         } else {
-                            if (postCount.get(0) != 1)
+                            if (postCount != 1)
                             {
-                                upgradeCounterFor(postCount.get(0), plantname, "del");
+                                upgradeCounterFor(postCount, plantname, "del");
                                 deleteDocFromFirebase(plantname, "feed", position,"");
 
                             }else {
@@ -152,8 +152,9 @@ public class UserActions {
 
     }
 
+
     private void upgradeCounterFor(int countw, String plantname, String type) {
-        //  System.out.println("3 sayaç değeri--> " + postCount.get(0));
+        System.out.println("sayaç değeri--> " + postCount);
 
         if (type == "add") {
             countw++;//yeni bitki güncesi eklenirse

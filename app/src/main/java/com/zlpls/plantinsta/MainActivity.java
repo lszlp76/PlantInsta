@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -55,6 +56,14 @@ public class MainActivity extends AppCompatActivity {
         newMember = findViewById(R.id.textView3);
         mAuth = FirebaseAuth.getInstance();
 
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
     }
 
     @Override
@@ -78,7 +87,7 @@ public void gotoSignUp (View view ){
         Intent intent = new Intent(MainActivity.this,NewMemberSignUp.class);
         startActivity(intent);
 }
-    private void signInWithGoogle() {
+    public void signInWithGoogle(View view) {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -118,7 +127,7 @@ public void gotoSignUp (View view ){
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(getApplicationContext(), "Hoşgeldin " + user.getDisplayName(), Toast.LENGTH_LONG).show();
 
-                            Intent intent = new Intent(MainActivity.this, PlantList.class);
+                            Intent intent = new Intent(MainActivity.this, SplashActivity.class);
                             startActivity(intent);
                             finish();
                         } else {

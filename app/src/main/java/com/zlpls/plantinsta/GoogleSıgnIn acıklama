@@ -1,0 +1,8 @@
+GoogleSignIn yaptığın zaman play consoledaki SHA-1'i kopyalayıp
+firebase de projeye ekle.
+
+Uygulama bütünlüğünü --> Play Console İmzalama dan SHA-1 'i al.
+
+https://play.google.com/console/u/1/developers/4642971547274251524/app/4973615916892372175/keymanagement
+
+sonra bunu firebasee proje ekle

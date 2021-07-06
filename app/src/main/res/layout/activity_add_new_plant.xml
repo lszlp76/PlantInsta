@@ -31,7 +31,7 @@
         android:layout_gravity="fill_horizontal"
         android:layout_marginTop="10dp"
         android:clickable="true"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         app:layout_constraintHeight_percent="0.5"
         app:layout_constraintTop_toBottomOf="@+id/yenigunluk"
 

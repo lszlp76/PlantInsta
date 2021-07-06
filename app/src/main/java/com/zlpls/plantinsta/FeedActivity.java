@@ -148,10 +148,12 @@ public class FeedActivity extends AppCompatActivity {
 
                 String name = imagesFromFB.get(position);
                 String date = datesFromFB.get(position);
+                String comments = commentsFromFB.get(position);
                 Intent intent = new Intent(FeedActivity.this, fullimage.class);
                 intent.putExtra("imageUrl", name);
                 intent.putExtra("date", date);
                 intent.putExtra("plantname", plantMarker);
+                intent.putExtra("comments",comments);
                 startActivity(intent);
 
             }
@@ -225,7 +227,7 @@ public class FeedActivity extends AppCompatActivity {
             fOut.flush();
             fOut.close();
 
-            MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, fileNames, "PlantInsta");
+           MediaStore.Images.Media.insertImage(getContentResolver(),bitmap, fileNames, "PlantInsta");
 
             Toast.makeText(getApplicationContext(), fileNames +
                     "güncesi " + getExternalFilesDir(Environment.DIRECTORY_PICTURES) + " altına indirildi.", Toast.LENGTH_LONG).show();

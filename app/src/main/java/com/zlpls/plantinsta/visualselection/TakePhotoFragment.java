@@ -79,7 +79,7 @@ public class TakePhotoFragment extends Fragment {
         takePhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Kamera başlatıldı ");
+               // Log.d(TAG, "Kamera başlatıldı ");
                 startCamera();
             }
         });
@@ -91,10 +91,15 @@ public class TakePhotoFragment extends Fragment {
 
     public void startCamera() {
         if
-
-        (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(getActivity(),
+/**
+ * izinleri fragment te uygulandığı görmek için alttaki kodu kullan. Eğer aktivitiye koyacak isen
+ * getContext olan yerlere aktivite gelmeli
+ * ve aktivite class altında onRequestPerxxx olacak şekilde
+ * yazılmalı
+ */
+        (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(
                     new String[]{Manifest.permission.CAMERA}, 1);
         } else {
 
@@ -126,6 +131,21 @@ public class TakePhotoFragment extends Fragment {
         }
 
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+
+        if (requestCode == 1){
+
+
+            if ( grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startCamera();
+
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override

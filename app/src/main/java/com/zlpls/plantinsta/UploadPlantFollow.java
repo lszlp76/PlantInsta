@@ -196,6 +196,9 @@ followfab.setOnClickListener(new View.OnClickListener() {
     }
     public void upload() {
         if (selectedImage != null) {
+
+
+
 //https://firebase.google.com/docs/storage/android/upload-files    storage ile ilgili tum detaylar
 //**** önce image byte a çevir***********
 
@@ -228,6 +231,7 @@ followfab.setOnClickListener(new View.OnClickListener() {
                         public void onSuccess(Uri uri) {
 
                             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                            //userActions.setPostCountFor(getApplicationContext(),plantMarkerforUpload, "add","");
                             String downloadUrl = uri.toString();
                             String comment = commentText.getText().toString();
 
@@ -252,7 +256,6 @@ followfab.setOnClickListener(new View.OnClickListener() {
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
                                     finish();
-                                   // userActions.setPostCountFor(getApplicationContext(),plantMarkerforUpload, "add","");
                                     //int counter = 0;
                                     //System.out.println("değer" + userActions.getPostCountFor(plantMarkerforUpload));
                                 }

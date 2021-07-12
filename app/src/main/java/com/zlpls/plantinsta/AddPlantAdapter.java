@@ -3,6 +3,8 @@ package com.zlpls.plantinsta;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,18 +17,62 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 import com.zlpls.plantinsta.visualselection.FileOperations;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 //1
-public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPlantAdapter.PlantHolder> {
+public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPlantAdapter.PlantHolder> implements Filterable {
+
+
     private OnItemClickListener listener;
     private OnItemLongClickListener longlistener;
     FileOperations fileOperations = new FileOperations();
+    private List<PlantModel> exampleList;
+    private List<PlantModel> exampleListFull;
 
-    public AddPlantAdapter(@NonNull FirestoreRecyclerOptions<PlantModel> options) {
+    public AddPlantAdapter(@NonNull FirestoreRecyclerOptions<PlantModel> options )  {
+
         super(options);
+
+      // exampleListFull = new ArrayList<>(exampleList);
+
+
     }
 
+    @Override
+    public Filter getFilter() {
+        return exampleFilter;
+    }
+    private Filter exampleFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<PlantModel> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(exampleListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (PlantModel item : exampleListFull) {
+                    if (item.getPlantName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            exampleList.clear();
+            exampleList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
     @Override
     protected void onBindViewHolder(@NonNull PlantHolder holder, int position, @NonNull PlantModel model) {
         holder.mplantNameText.setText(model.getPlantName());
@@ -34,17 +80,21 @@ public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPla
         holder.mplantPostCount.setText(model.getPlantPostCount()+" adet günceniz var");
         //holder.mplantPostNumber.setText(model.getPlantAvatar());
 
-        Random r = new Random();
+        /*
+        Rastegele iptal edildi V2.
+          Random r = new Random();
         int low = 300;
         int high = 700;
         int result = r.nextInt(high-low) + low;
        double width = (result*1.6);
+         */
+
         //int degree = fileOperations.getImageRotationbyPath(model.getPlantAvatar());
 
             Picasso.get().load(String.valueOf(model.getPlantAvatar()))
 
 
-                    .resize(500,(result))
+                    //.resize(500,500)
                     .into(holder.mplantAvatarPicture);
 
 
@@ -52,6 +102,11 @@ public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPla
 
     }
 
+
+    protected boolean filterCondition(PlantModel model, String filterPattern) {
+        return model.getPlantName().toLowerCase().contains(filterPattern) ||
+                model.getPlantName().toLowerCase().contains(filterPattern);
+    }
     public void deleteItem(int position) {
         getSnapshots().getSnapshot(position)
                 .getReference().delete();

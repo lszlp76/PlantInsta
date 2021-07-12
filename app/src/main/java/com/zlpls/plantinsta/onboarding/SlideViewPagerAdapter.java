@@ -77,9 +77,9 @@ public class SlideViewPagerAdapter extends PagerAdapter {
                 imageView4.setImageResource(R.drawable.unselected);
                 imageView3.setImageResource(R.drawable.selected);
                 imageView2.setImageResource(R.drawable.unselected);
-                textView.setText("Günlük tutun");
-                textView2.setText("Bahçenizdeki fidanlarınızın, balkonunuzdaki çiçeklerinizin, tarlanızdaki mısırlarınızın " +
-                        "büyümelerini gözlemleyin, fotoğraflayın, notlar alın.");
+                textView.setText("Keep a diary for your plants");
+                textView2.setText("Observe the growth of your seedlings in your garden,the flowers on your balcony and the plants" +
+                        "in your field, take some photos of them and some notes.");
                 back.setVisibility(View.GONE);
                 next.setVisibility(View.VISIBLE);
                 button.setVisibility(view.GONE);
@@ -89,9 +89,8 @@ public class SlideViewPagerAdapter extends PagerAdapter {
                 imageView4.setImageResource(R.drawable.unselected);
                 imageView3.setImageResource(R.drawable.unselected);
                 imageView2.setImageResource(R.drawable.selected);
-                textView.setText("Güncelerinizi oluşturun");
-                textView2.setText("Günlüklerinize günceler ekleyin. Bitkilerinizin büyümelerini günceleriniz " +
-                        "ile takip edin.");
+                textView.setText("Keep it up to date");
+                textView2.setText("Add pages to your diaries. Follow their growths using your plants diaries");
                 back.setVisibility(View.VISIBLE);
                 next.setVisibility(View.VISIBLE);
                 button.setVisibility(view.GONE);
@@ -102,8 +101,8 @@ public class SlideViewPagerAdapter extends PagerAdapter {
                 imageView4.setImageResource(R.drawable.selected);
                 imageView3.setImageResource(R.drawable.unselected);
                 imageView2.setImageResource(R.drawable.unselected);
-                textView.setText("Paylaşın");
-                textView2.setText("Güncelerinizi arkadaşlarınız ile paylaşın.");
+                textView.setText("Share it !");
+                textView2.setText("Share your pages with your friends.");
                 back.setVisibility(View.VISIBLE);
                 next.setVisibility(View.GONE);
                 button.setEnabled(true);

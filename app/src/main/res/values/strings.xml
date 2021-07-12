@@ -23,11 +23,11 @@
 
     <string-array name="UserMenuList">
         <item>****</item>
-        <item>Nasıl Kullanılır?</item>
-        <item>Gizlilik Kuralları</item>
-        <item>İletişim</item>
-        <item>Neşeli Bahçe Dükkan</item>
-        <item>Çıkış</item>
+        <item>How to use?</item>
+        <item>Policy</item>
+        <item>Communication</item>
+        <item>Neseli Bahce Workshop</item>
+        <item>Sign out</item>
 
     </string-array>
 </resources>

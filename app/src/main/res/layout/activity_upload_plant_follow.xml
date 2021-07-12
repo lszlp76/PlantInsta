@@ -12,6 +12,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center"
+        android:editable="false"
         android:text="Yeni Günce Ekleme"
         tools:ignore="MissingConstraints">
 

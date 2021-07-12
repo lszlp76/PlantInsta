@@ -1,20 +1,19 @@
 package com.zlpls.plantinsta;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.zlpls.plantinsta.menulist.UserMenuList;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -31,13 +30,15 @@ public class PlantList extends AppCompatActivity {
     UserActions userActions = new UserActions();
     FragmentTransaction fragmentTransaction;
     //BottomAppBar bottomAppBar;
+    FirestoreRecyclerOptions<PlantModel> options, filteredListOptions;
 
     BottomNavigationView bottomAppBar;
     private FirebaseAuth mAuth;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference plantReference ;
-    String plantinstauser;
+    String plantinstauser,data;
     private com.zlpls.plantinsta.AddPlantAdapter adapter;
+    Query query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +54,12 @@ public class PlantList extends AppCompatActivity {
         /* FRAGMAN HAZIR
         FragmentManager fragmentManager = (getSupportFragmentManager());
         fragmentTransaction = fragmentManager.beginTransaction();
-
-
         fragmentTransaction.replace(R.id.frame_layout,firstFragment).commit();
         //frame_layout, activity.main.xml içinde fragmentlerin gösterileceği layout isimi
         */
         //setupBottomAppBar();
-        setUpRecyclerView();
+
+        setUpRecyclerView(data);
         ActionBar actionBar = getSupportActionBar();
         String title = "PlantInsta Günlüklerim";
 
@@ -73,7 +73,7 @@ public class PlantList extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
 
-       //kamera izinleri
+        //kamera izinleri
 
 
     }
@@ -81,6 +81,32 @@ public class PlantList extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.searchbar, menu);
+        MenuItem searchItem = menu.findItem(R.id.search_bar);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                data = newText;
+                System.out.println("data : " + data);
+                setUpRecyclerView(data);
+
+                adapter.notifyDataSetChanged();
+                return false;
+            }
+        });
+
+
+        return true;
     }
 
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -118,22 +144,52 @@ public class PlantList extends AppCompatActivity {
         adapter.stopListening();
     }
 
-    private void setUpRecyclerView() {
+    private void setUpRecyclerView(String data) {
+        //original query
+        query = plantReference.orderBy("plantName", Query.Direction.DESCENDING)
+        .whereEqualTo("plantUserMail", mAuth.getCurrentUser().getEmail());
 
-        Query query = plantReference.orderBy("plantFirstDate", Query.Direction.DESCENDING);
-              //  .whereEqualTo("plantUserMail", mAuth.getCurrentUser().getEmail());
-        FirestoreRecyclerOptions<PlantModel> options = new FirestoreRecyclerOptions.Builder<PlantModel>()
+        // filtreli query
+        Query filteredQuery = plantReference.whereGreaterThanOrEqualTo("plantName",data)
+                . whereLessThanOrEqualTo("plantName",data +"\uf8ff")
+                 .whereEqualTo("plantUserMail", mAuth.getCurrentUser().getEmail());
+
+        //original options
+        options = new FirestoreRecyclerOptions.Builder<PlantModel>()
                 .setQuery(query, PlantModel.class)
+                .setLifecycleOwner(this)
+                .build();
+        // filtreli options
+        filteredListOptions = new FirestoreRecyclerOptions.Builder<PlantModel>()
+                .setQuery(filteredQuery, PlantModel.class)
+                .setLifecycleOwner(this)
                 .build();
 
-        adapter = new com.zlpls.plantinsta.AddPlantAdapter(options);
+
+
+
+        if (data != null ){
+            adapter = new com.zlpls.plantinsta.AddPlantAdapter(filteredListOptions);
+            System.out.println("query size " + filteredListOptions.getSnapshots().size());
+            adapter.updateOptions(filteredListOptions);
+
+        }else {
+            adapter = new com.zlpls.plantinsta.AddPlantAdapter(options);
+
+            adapter.updateOptions(options);
+
+        }
+
+
+
         RecyclerView recyclerView = findViewById(R.id.plantlistrecyclerview);
         recyclerView.setHasFixedSize(true);
-       //recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL));
 
 
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         //????????SWIPE İLE SİLME*********************
 
@@ -150,7 +206,6 @@ public class PlantList extends AppCompatActivity {
                 //adapter.deleteItem(viewHolder.getAdapterPosition());
             }
         }).attachToRecyclerView(recyclerView);
-
  */
 
         adapter.setOnItemClickListener(new AddPlantAdapter.OnItemClickListener() {
@@ -161,9 +216,9 @@ public class PlantList extends AppCompatActivity {
                 String id = documentSnapshot.getId();
                 String path = documentSnapshot.getReference().getPath();
 
-               // Toast.makeText(PlantList.this,
-                 //       "Position " + position + " ID " + id + " İsim " + plant.getPlantName()
-                   //     , Toast.LENGTH_SHORT).show();
+                // Toast.makeText(PlantList.this,
+                //       "Position " + position + " ID " + id + " İsim " + plant.getPlantName()
+                //     , Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(PlantList.this, FeedActivity.class);
                 intent.putExtra("mark", plant.getPlantName());
@@ -174,8 +229,8 @@ public class PlantList extends AppCompatActivity {
 
             public void onDelete(DocumentSnapshot documentSnapshot, int position) {
                 //adapter.deleteItem(position);
-               // Toast.makeText(PlantList.this,
-                 //       "Position " + position, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(PlantList.this,
+                //       "Position " + position, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -213,54 +268,3 @@ public class PlantList extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 }
-
-
-/*
-private void setupBottomAppBar() {
-        bottomAppBar = findViewById(R.id.bottomAppBar);
-
-
-        //click event over Bottom bar menu item
-        bottomAppBar.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-
-
-                case R.id.home:
-
-                    break;
-            }
-            return false;
-        });
-
-        //click event over navigation menu like back arrow or hamburger icon
-        bottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                userActions.signOutUser();
-
-                Intent intent = new Intent(PlantList.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-                //
-            }
-        });
-        /*
-         FloatingActionButton fab = findViewById(R.id.floating_action_button);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-
-                Intent intent = new Intent(PlantList.this, VisualMainActivity.class);
-                 intent.putExtra("fromList",0);
-
-                startActivity(intent);
-
-            }
-        });
-         */
-
-
-

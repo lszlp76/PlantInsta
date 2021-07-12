@@ -18,21 +18,16 @@ import java.util.ArrayList;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.PostHolder> {
     FileOperations fileOperations;
     private OnItemClickListener mlistener;
-    private ArrayList<String> commentsList;
-    private ArrayList<String> imagesList;
-    private ArrayList<String> datesList;
+
     private ArrayList<PlantModel> plants;
     UserActions userActions;
+
+
     public RecyclerAdapter(ArrayList<PlantModel> plants) {
         this.plants = plants;
     }
 
-    public RecyclerAdapter(ArrayList<String> commentsList, ArrayList<String> imagesList, ArrayList<String> datesList) {
 
-        this.commentsList = commentsList;
-        this.imagesList = imagesList;
-        this.datesList = datesList;
-    }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mlistener = listener;

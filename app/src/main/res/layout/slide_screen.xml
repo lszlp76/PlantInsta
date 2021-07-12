@@ -120,7 +120,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/btn_bg"
         android:textColor="@color/white"
-        android:text="Başlayalım"
+        android:text="GET STARTED"
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 

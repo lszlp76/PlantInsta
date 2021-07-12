@@ -6,13 +6,13 @@
     <item
         android:id="@+id/home"
         android:icon="@drawable/ic_gunluk"
-        android:title="Günlüklerim"
+        android:title="My Plants"
          />
 
     <item
         android:id="@+id/photo"
         android:icon="@drawable/ic_camera"
-        android:title="Ekle" />
+        android:title="New Diary" />
 
 
     <item

@@ -39,7 +39,7 @@ public class fullimage extends AppCompatActivity {
 
         //comments.setText(comment);
         ActionBar actionBar = getSupportActionBar();
-        String title = plantName+ " Güncesi@"+date;
+        String title = plantName+ " 'page @"+date;
         actionBar.setTitle(title);
 
         getSupportActionBar().setTitle(title);

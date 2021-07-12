@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:ems="10"
-        android:hint="Kullanıcı e-Mail"
+        android:hint="E-Mail"
         android:inputType="text"
         android:lines="1"
 
@@ -87,7 +87,7 @@
 
         android:textColor="@color/textColorPlantinsta"
         android:textSize="16sp"
-        android:hint="Şifre"
+        android:hint="Password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -99,7 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="210dp"
-        android:text="Şifremi Unuttum"
+        android:text="I forgot my password"
         android:onClick="forgotPass"
         android:textSize="15dp"
 
@@ -112,7 +112,7 @@
         android:layout_width="310dp"
         android:layout_height="45dp"
         android:background="@drawable/roundablebutton"
-        android:text="GİRİŞ"
+        android:text="PlantInsta Sign In"
         android:onClick="signIn"
         android:textColor="#ffffff"
         android:backgroundTint="@color/primaryColor"
@@ -129,7 +129,7 @@
         android:background="@drawable/roundablebutton"
         android:backgroundTint="@color/primaryColor"
         android:onClick="signInWithGoogle"
-        android:text="Google ile giriş"
+        android:text="Sign In with Google"
         android:textColor="#FFFFFF"
         app:icon="@drawable/googleicon"
         app:layout_constraintEnd_toEndOf="parent"
@@ -143,14 +143,14 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:onClick="gotoSignUp"
-        android:text="Yeni üye olmak istiyorum"
-        android:textSize="18dp"
+        android:text="Don't have an PlanInsta account?"
+        android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_button_Google" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

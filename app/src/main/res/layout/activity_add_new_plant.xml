@@ -8,7 +8,8 @@
     <TextView
         android:id="@+id/yenigunluk"
         android:gravity="center"
-        android:text="Yeni Günlük Oluşturma"
+        android:text="New Plant Diary"
+        android:enabled="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
@@ -20,8 +21,7 @@
         android:ems="10"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintTop_toBottomOf="@id/newplantimageview"
-        android:hint="Yeni bitki ismi girin"
-        android:inputType="textPersonName"
+
         tools:ignore="MissingConstraints" />
 
     <ImageView
@@ -51,7 +51,7 @@
         android:ems="10"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/newplantimageview"
-        android:hint="Günlük adı"
+        android:hint="Diary Name"
         android:textColor="@color/textColorPlantinsta"
         android:textStyle="italic|bold"
         android:textSize="16sp"
@@ -68,7 +68,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:textSize="16sp"
         android:textColor="@color/textColorPlantinsta"
-        android:hint="Notlarınız..."
+        android:hint="Your comments...."
         android:inputType="textMultiLine"
         android:lines="3"
         android:maxLines="3"

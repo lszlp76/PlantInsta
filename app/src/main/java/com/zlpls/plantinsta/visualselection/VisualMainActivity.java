@@ -41,7 +41,7 @@ public class VisualMainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_visual_main);
         ActionBar actionBar = getSupportActionBar();
-        String title = "PlantInsta Foto Ekle";
+        String title = "Take photo / picture";
         actionBar.setTitle(title);
         getSupportActionBar().setTitle(title);
 /*

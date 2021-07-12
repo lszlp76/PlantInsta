@@ -4,8 +4,7 @@
     <item
         android:id="@+id/search_bar"
         android:icon="@drawable/ic__search"
-        android:title="Ara"
-        android:queryHint= "Search My Plant"
+        
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.widget.SearchView"
 

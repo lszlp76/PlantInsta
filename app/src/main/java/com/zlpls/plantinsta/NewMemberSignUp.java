@@ -30,7 +30,7 @@ Button button;
 
         ActionBar actionBar = getSupportActionBar();
 
-        actionBar.setTitle("PlantInsta Yeni Üye");
+        actionBar.setTitle("Welcome New PlantInsta Member");
         emailText = findViewById(R.id.mail);
         passwordText = findViewById(R.id.password);
         mAuth = FirebaseAuth.getInstance();
@@ -46,12 +46,12 @@ Button button;
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                showAlert("Yeni Üye Kaydı", "PlantInsta Bitki Günlüğüne hoşgeldiniz \n" + user.getEmail() + "\nadresiniz ile giriş yapabilirisiniz.");
+                                showAlert("New Member", "Welcome to PlantInsta Digital Plant Diary \n"  + "\n You can sign in with your "+ user.getEmail() +" adress.");
 
 
                             } else {
 
-                                Toast.makeText(getApplicationContext(), "e-mail geçersiz / şifre 6 haneli değil",
+                                Toast.makeText(getApplicationContext(), "Wrong e-mail or your password has not 6 digits",
                                         Toast.LENGTH_SHORT).show();
 
                                 //+task.getException()  eklersen firebase hatasını görürsün
@@ -62,7 +62,7 @@ Button button;
                     });
 
         } else {
-            Toast.makeText(getApplicationContext(), "Email veya Şifre boş bırakılmamalıdır",
+            Toast.makeText(getApplicationContext(), "Fill e-mail/password ",
                     Toast.LENGTH_SHORT).show();
 
         }

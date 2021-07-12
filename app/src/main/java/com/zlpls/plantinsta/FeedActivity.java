@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.format.DateFormat;
+import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -129,8 +130,15 @@ public class FeedActivity extends AppCompatActivity {
 
         bottomAppBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         bottomAppBar.setItemIconTintList(null);
+
+
+        Menu menu = bottomAppBar.getMenu();
+        menu.findItem(R.id.photo).setIcon(R.drawable.ic__send);
+        menu.findItem(R.id.photo).setTitle("Add New Page");
+
+
         ActionBar actionBar = getSupportActionBar();
-        String title = plantMarker + " Günceleri";
+        String title = plantMarker + "'s Pages";
         actionBar.setTitle(title);
         getSupportActionBar().setTitle(title);
         getDataFromFirestore();

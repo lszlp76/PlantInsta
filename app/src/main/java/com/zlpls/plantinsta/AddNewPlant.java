@@ -177,7 +177,7 @@ public class AddNewPlant extends AppCompatActivity {
         bottomAppBar.setItemIconTintList(null);
         Menu menu = bottomAppBar.getMenu();
         menu.findItem(R.id.photo).setIcon(R.drawable.ic__send);
-        menu.findItem(R.id.photo).setTitle("Gönder");
+        menu.findItem(R.id.photo).setTitle("Add New Diary");
 /*
  fab.setOnClickListener(new View.OnClickListener() {
             @Override

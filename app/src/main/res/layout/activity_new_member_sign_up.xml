@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="48dp"
-        android:hint="Kullanıcı adı olacak geçerli e-mail belirleyin"
+        android:hint="Type your e-mail as username"
         android:inputType="text"
         android:lines="1"
 
@@ -41,7 +41,7 @@
         android:inputType="text"
 
 
-        android:hint="6 basamaklı şifrenizi belirleyin"
+        android:hint="create your 6 digit password"
         android:textStyle="italic"
         android:textColor="@color/textColorPlantinsta"
         android:textSize="16sp"
@@ -58,7 +58,7 @@
         android:background="@drawable/roundablebutton"
         android:backgroundTint="@color/primaryColor"
         android:textSize="18sp"
-        android:text="Kaydol"
+        android:text="SIGn Up"
         android:onClick="signUp"
         android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"

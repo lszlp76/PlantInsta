@@ -44,24 +44,16 @@ public class PlantList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_list);
-        // Toolbar toolbar = findViewById(R.id.toolbar);
 
         mAuth = FirebaseAuth.getInstance();
         plantinstauser = mAuth.getCurrentUser().getEmail();
         String path = plantinstauser;
         plantReference = db.collection(path);
 
-        /* FRAGMAN HAZIR
-        FragmentManager fragmentManager = (getSupportFragmentManager());
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout,firstFragment).commit();
-        //frame_layout, activity.main.xml içinde fragmentlerin gösterileceği layout isimi
-        */
-        //setupBottomAppBar();
-
         setUpRecyclerView(data);
+
         ActionBar actionBar = getSupportActionBar();
-        String title = "PlantInsta Günlüklerim";
+        String title = "My PlantInsta Diaries";
 
         getSupportActionBar().setTitle(title);
         BottomNavigationView bottomAppBar =  findViewById(R.id.bottom_navigation);
@@ -71,9 +63,9 @@ public class PlantList extends AppCompatActivity {
 
 
 
-        adapter.notifyDataSetChanged();
 
-        //kamera izinleri
+
+
 
 
     }
@@ -88,6 +80,7 @@ public class PlantList extends AppCompatActivity {
         inflater.inflate(R.menu.searchbar, menu);
         MenuItem searchItem = menu.findItem(R.id.search_bar);
         SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Search my diary");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -168,16 +161,16 @@ public class PlantList extends AppCompatActivity {
 
 
 
-        if (data != null ){
+        if (data != null ){ // data serach yerine yazılan arama sözcüğü
             adapter = new com.zlpls.plantinsta.AddPlantAdapter(filteredListOptions);
             System.out.println("query size " + filteredListOptions.getSnapshots().size());
             adapter.updateOptions(filteredListOptions);
-
+            adapter.notifyDataSetChanged();
         }else {
             adapter = new com.zlpls.plantinsta.AddPlantAdapter(options);
 
             adapter.updateOptions(options);
-
+            adapter.notifyDataSetChanged();
         }
 
 
@@ -189,7 +182,7 @@ public class PlantList extends AppCompatActivity {
 
 
         recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+
 
         //????????SWIPE İLE SİLME*********************
 

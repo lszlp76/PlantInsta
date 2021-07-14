@@ -3,6 +3,7 @@ package com.zlpls.plantinsta.visualselection;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -70,7 +71,10 @@ public class VisualMainActivity extends AppCompatActivity {
 
         tabs.getTabAt(1).setIcon(R.drawable.ic_addimage);
         tabs.getTabAt(0).setIcon(R.drawable.ic_takephoto);
+        tabs.setBackgroundColor(Color.parseColor("#c8e6c9"));
 
+        tabs.setSelectedTabIndicatorColor(Color.parseColor("#c43e00"));
+//#c8e6c9
         Intent intentf = getIntent();
         fromList = intentf.getIntExtra("fromList", 0);
         UserActions.fromList = fromList;

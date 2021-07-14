@@ -51,12 +51,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
 public class AddNewPlant extends AppCompatActivity {
     static ImageView imageView;
+    ImageView addplantimageView;
     private final Handler handler = new Handler();
     public ArrayList<PlantModel> mplantModel;
     public FileOperations fileOperations = new FileOperations();
@@ -145,7 +147,7 @@ public class AddNewPlant extends AppCompatActivity {
         newplantname = findViewById(R.id.editTextTextPersonName3);
         comment = findViewById(R.id.editTextTextPersonName4);
         //fab = findViewById(R.id.floating_action_button);
-        imageView = findViewById(R.id.newplantimageview);
+        addplantimageView = findViewById(R.id.newplantimageview);
         progressBar = findViewById(R.id.progressBar);
         firebasedb = FirebaseFirestore.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
@@ -158,7 +160,7 @@ public class AddNewPlant extends AppCompatActivity {
         // gelen resmi imageivew ekle
         Picasso.get()
                 .load("file:" + selectedImageFromUser)
-                .into(imageView);
+                .into(addplantimageView);
 
         // önce dösyaya çevir
         File bitmapFile = new File(selectedImageFromUser);
@@ -307,7 +309,9 @@ public class AddNewPlant extends AppCompatActivity {
         //önce
         if (!newplantname.getText().toString().equals("") && selectedImage != null) {
             //yeni isimi al
-            String newPlantMarkerName = newplantname.getText().toString();
+            String name = newplantname.getText().toString();
+
+           String newPlantMarkerName = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase(Locale.ENGLISH);
 
             //selectedImage ı küçült
             selectedImage = makeSmallerImage(selectedImage, 800);
@@ -400,7 +404,7 @@ public class AddNewPlant extends AppCompatActivity {
                                                         @Override
                                                         public void onSuccess(DocumentReference documentReference) {
                                                             Toast.makeText(AddNewPlant.this,
-                                                                    "Oluşturuldu", Toast.LENGTH_LONG).show();
+                                                                    "Your diary added into the list", Toast.LENGTH_LONG).show();
                                                             Intent intent = new Intent(AddNewPlant.this,
                                                                     PlantList.class);
                                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -444,7 +448,7 @@ public class AddNewPlant extends AppCompatActivity {
 
 
         } else {
-            Toast.makeText(getApplicationContext(), "Hatalı İşlem", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Wrong process", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -482,7 +486,7 @@ public class AddNewPlant extends AppCompatActivity {
                                 } else {
                                     {
                                         if (mLoadNewPlant != null && mLoadNewPlant.isInProgress()) {
-                                            Toast.makeText(AddNewPlant.this, "Yükleme devam ediyor", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(AddNewPlant.this, "Uploading is on going", Toast.LENGTH_SHORT).show();
 
                                         } else {
                                             sendPicture();
@@ -501,7 +505,7 @@ public class AddNewPlant extends AppCompatActivity {
 
 
         } else {
-            Toast.makeText(getApplicationContext(), "Günlük adı girmelisiniz !", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Please enter a diary name!", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -524,7 +528,10 @@ public class AddNewPlant extends AppCompatActivity {
     }
 
     public void makeAvatar() {
-        String newPlantMarkerName = newplantname.getText().toString();
+        String name= (newplantname.getText().toString());
+        String newPlantMarkerName = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase(Locale.ENGLISH);
+
+        System.out.println("isim "+ newPlantMarkerName);
         selectedImageAsIcon = makeSmallerImage(selectedImage, 300);
         ByteArrayOutputStream byteArrayOutputStreamAvatar = new ByteArrayOutputStream();
         selectedImageAsIcon.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamAvatar);

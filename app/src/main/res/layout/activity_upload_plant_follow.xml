@@ -13,7 +13,7 @@
         android:textStyle="bold"
         android:gravity="center"
         android:editable="false"
-        android:text="Yeni Günce Ekleme"
+        android:text="Add New Page"
         tools:ignore="MissingConstraints">
 
     </TextView>
@@ -41,7 +41,7 @@
         android:layout_margin="5dp"
         android:ems="10"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:hint="Notlarınız..."
+        android:hint="Your notes...."
         android:inputType="textMultiLine"
         android:lines="3"
         android:maxLines="3"

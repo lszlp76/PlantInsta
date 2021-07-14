@@ -11,10 +11,10 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         android:padding="2dp">
 
-        <com.google.android.material.imageview.ShapeableImageView
+        <!--com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/plantavatarpicture"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -23,40 +23,45 @@
             android:layout_centerVertical="true"
             app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
             app:strokeColor="#00e676"
-            app:strokeWidth="0.2dp" />
-        <!--ImageView
+            app:strokeWidth="0.2dp" /-->
+        <ImageView
             android:id="@+id/plantavatarpicture"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="5dp"
 
-            android:layout_alignParentLeft="true"
-            android:scaleType="centerInside"
+            android:scaleType="fitXY"
 
-            android:textColor="@color/colorPrimaryDark" /-->
+            android:textColor="@color/colorPrimaryDark"/>
 
         <TextView
             android:id="@+id/plantnametext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/plantavatarpicture"
-           android:paddingRight="30dp"
+
+android:layout_below="@id/plantavatarpicture"
+
+            android:layout_centerHorizontal="true"
+            android:paddingRight="30dp"
             android:maxLines="1"
             android:text="Title"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
+
             android:id="@+id/plantfirstdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/plantnametext"
-            android:layout_toRightOf="@id/plantavatarpicture"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
 
             android:text="30.12.2010"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/plantpostnumber"

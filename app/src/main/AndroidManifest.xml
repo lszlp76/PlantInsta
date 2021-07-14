@@ -66,6 +66,9 @@
             android:screenOrientation="portrait" />
         <activity android:name=".onboarding.SlideActivity"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".visualselection.Camera2Api"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">

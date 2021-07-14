@@ -125,7 +125,7 @@ public void gotoSignUp (View view ){
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(getApplicationContext(), "Hoşgeldin " + user.getDisplayName(), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(), "Hoşgeldin " + user.getDisplayName(), Toast.LENGTH_LONG).show();
 
                             Intent intent = new Intent(MainActivity.this, SplashActivity.class);
                             startActivity(intent);
@@ -186,14 +186,14 @@ public void gotoSignUp (View view ){
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                Toast.makeText(getApplicationContext(), "Hoşgeldin " + user.getEmail(), Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(), "Hoşgeldin " + user.getEmail(), Toast.LENGTH_LONG).show();
                                 // to do
                                 Intent intent = new Intent(MainActivity.this, SplashActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else {
 
-                                Toast.makeText(getApplicationContext(), "Üye bilgilerinizde hatalar var",
+                                Toast.makeText(getApplicationContext(), "Wrong ID / password",
                                         Toast.LENGTH_SHORT).show();
 
                             }
@@ -201,7 +201,7 @@ public void gotoSignUp (View view ){
                     });
 
         } else {
-            Toast.makeText(getApplicationContext(), "Email veya Şifre boş bırakılmamalıdır",
+            Toast.makeText(getApplicationContext(), "Email or Password should be filled",
                     Toast.LENGTH_SHORT).show();
 
         }
@@ -239,17 +239,17 @@ public void gotoSignUp (View view ){
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
 
-                                Toast.makeText(getApplicationContext(), "Email gönderildi",
+                                Toast.makeText(getApplicationContext(), "E-mail has been sent",
                                         Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(getApplicationContext(), "Böyle bir adres kayıtlı değil",
+                                Toast.makeText(getApplicationContext(), "Wrong e-mail ",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
         } else {
-            Toast.makeText(getApplicationContext(), "Kayıt sırasında kullanıdığınız e-mail " +
-                            "adresinizi girin",
+            Toast.makeText(getApplicationContext(), "Enter your e-mail adress used for registration "
+                            ,
                     Toast.LENGTH_SHORT).show();
         }
 

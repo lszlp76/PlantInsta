@@ -47,7 +47,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class UploadPlantFollow extends AppCompatActivity {
-    static ImageView imageView;
+    ImageView addpageimageView;
     EditText commentText;
     EditText dateText;
     Bitmap selectedImage;
@@ -75,7 +75,7 @@ public class UploadPlantFollow extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_plant_follow);
         //setupBottomAppBar();
-        imageView = findViewById(R.id.plantfollwimageview);
+        addpageimageView = findViewById(R.id.plantfollwimageview);
         commentText = findViewById(R.id.commenttext);
         /***Storage Aktif etme***********/
         firebaseStorage = FirebaseStorage.getInstance();
@@ -91,21 +91,21 @@ public class UploadPlantFollow extends AppCompatActivity {
 
         Menu menu = bottomAppBar.getMenu();
         menu.findItem(R.id.photo).setIcon(R.drawable.ic__send);
-        menu.findItem(R.id.photo).setTitle("Gönder");
+        menu.findItem(R.id.photo).setTitle("Add New Page");
 
         //   Intent intent = getIntent();
         plantMarkerforUpload = userActions.getPlantNameToModify();//intent.getStringExtra("mark");
 
         ActionBar actionBar = getSupportActionBar();
 
-        actionBar.setTitle("@"+plantMarkerforUpload+" yeni günce");
+        actionBar.setTitle("New page for "+plantMarkerforUpload);
 
         Intent intentf = getIntent();
         selectedImageFromUser = intentf.getStringExtra("selectedimagefromuser");
         // gelen resmi imageivew ekle
         Picasso.get()
                 .load("file:" + selectedImageFromUser)
-                .into(imageView);
+                .into(addpageimageView);
         File bitmapFile = new File(selectedImageFromUser);
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         selectedImage = fileOperations.getStreamByteFromImage(bitmapFile);
@@ -250,14 +250,15 @@ followfab.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
 
-                                    Toast.makeText(UploadPlantFollow.this, "Yüklendi", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(UploadPlantFollow.this, "Added", Toast.LENGTH_LONG).show();
 
                                     Intent intent = new Intent(getApplicationContext(), PlantList.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
                                     finish();
                                     //int counter = 0;
-                                    //System.out.println("değer" + userActions.getPostCountFor(plantMarkerforUpload));
+                                    //userActions.setPostCountFor(UploadPlantFollow.this,plantMarkerforUpload,"add","1");
+                                    //System.out.println("değer "+ userActions.getPostCountValue());
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override

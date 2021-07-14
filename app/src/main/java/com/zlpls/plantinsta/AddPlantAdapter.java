@@ -21,14 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 //1
-public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPlantAdapter.PlantHolder> implements Filterable {
+public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPlantAdapter.PlantHolder>  {
 
-
+//implements Filterable
     private OnItemClickListener listener;
     private OnItemLongClickListener longlistener;
     FileOperations fileOperations = new FileOperations();
-    private List<PlantModel> exampleList;
-    private List<PlantModel> exampleListFull;
+  // private List<PlantModel> exampleList;
+  //private List<PlantModel> exampleListFull;
 
     public AddPlantAdapter(@NonNull FirestoreRecyclerOptions<PlantModel> options )  {
 
@@ -39,45 +39,53 @@ public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPla
 
     }
 
-    @Override
-    public Filter getFilter() {
-        return exampleFilter;
-    }
-    private Filter exampleFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<PlantModel> filteredList = new ArrayList<>();
+    /**
+     *  @Override
+     *     public Filter getFilter() {
+     *         return exampleFilter;
+     *     }
+     *     private Filter exampleFilter = new Filter() {
+     *         @Override
+     *         protected FilterResults performFiltering(CharSequence constraint) {
+     *             List<PlantModel> filteredList = new ArrayList<>();
+     *
+     *             if (constraint == null || constraint.length() == 0) {
+     *                 filteredList.addAll(exampleListFull);
+     *             } else {
+     *                 String filterPattern = constraint.toString().toLowerCase().trim();
+     *
+     *                 for (PlantModel item : exampleListFull) {
+     *                     if (item.getPlantName().toLowerCase().contains(filterPattern)) {
+     *                         filteredList.add(item);
+     *                     }
+     *                 }
+     *             }
+     *
+     *             FilterResults results = new FilterResults();
+     *             results.values = filteredList;
+     *
+     *             return results;
+     *         }
+     *
+     *         @Override
+     *         protected void publishResults(CharSequence constraint, FilterResults results) {
+     *             exampleList.clear();
+     *             exampleList.addAll((List) results.values);
+     *             notifyDataSetChanged();
+     *         }
+     *     };
+     *       protected boolean filterCondition(PlantModel model, String filterPattern) {
+     *         return model.getPlantName().toLowerCase().contains(filterPattern) ||
+     *                 model.getPlantName().toLowerCase().contains(filterPattern);
+     *     }
+     * @return
+     */
 
-            if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(exampleListFull);
-            } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-
-                for (PlantModel item : exampleListFull) {
-                    if (item.getPlantName().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
-                }
-            }
-
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            exampleList.clear();
-            exampleList.addAll((List) results.values);
-            notifyDataSetChanged();
-        }
-    };
     @Override
     protected void onBindViewHolder(@NonNull PlantHolder holder, int position, @NonNull PlantModel model) {
         holder.mplantNameText.setText(model.getPlantName());
         holder.mplantFirstDate.setText(model.getplantFirstDate());
-        holder.mplantPostCount.setText(model.getPlantPostCount()+" adet günceniz var");
+        holder.mplantPostCount.setText(model.getPlantPostCount());
         //holder.mplantPostNumber.setText(model.getPlantAvatar());
 
         /*
@@ -103,10 +111,7 @@ public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPla
     }
 
 
-    protected boolean filterCondition(PlantModel model, String filterPattern) {
-        return model.getPlantName().toLowerCase().contains(filterPattern) ||
-                model.getPlantName().toLowerCase().contains(filterPattern);
-    }
+
     public void deleteItem(int position) {
         getSnapshots().getSnapshot(position)
                 .getReference().delete();

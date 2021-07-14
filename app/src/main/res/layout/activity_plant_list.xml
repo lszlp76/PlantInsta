@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_ciceksvg">
 
-    <!-- Note: A RecyclerView can also be used -->
+    android:background ="#c8e6c9">
+    <!-- Note: A RecyclerView can also be used
+    android:background="@drawable/ic_ciceksvg"-->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

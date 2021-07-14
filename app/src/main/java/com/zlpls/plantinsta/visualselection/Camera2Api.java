@@ -1,13 +1,8 @@
 package com.zlpls.plantinsta.visualselection;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
@@ -22,41 +17,28 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
 
-import com.zlpls.plantinsta.AddNewPlant;
 import com.zlpls.plantinsta.R;
-import com.zlpls.plantinsta.UploadPlantFollow;
-import com.zlpls.plantinsta.UserActions;
-import com.squareup.picasso.Picasso;
-import com.zlpls.plantinsta.menulist.PlantInstaWeb;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -68,22 +50,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static android.app.Activity.RESULT_OK;
-// https://www.youtube.com/watch?v=CLXXXtslPik&list=PLgCYzUzKIBE9XqkckEJJA0I1wVKbUAOdv&index=46
 
-/**
- * part 44 3:45'de hangi fragmenteten geliyorsa ona göre davranma var.
+// https://github.com/googlearchive/android-Camera2Basic
+// https://medium.com/@gauravpandey_34933/how-to-camera2-api-in-android-576fd23650ea
+// https://github.com/craigspicer/Camera2API
+// https://stackoverflow.com/questions/32462486/android-camera2-front-camera
+
+/*  ZOOM
+https://stackoverflow.com/questions/52158395/how-to-zoom-camera-using-android-camera2-api
+https://stackoverflow.com/questions/52568987/camera-zoom-setting-using-camera2-api
  */
-public class TakePhotoFragment extends Fragment {
-   UserActions userActions;
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+public class Camera2Api extends AppCompatActivity {
+
     private static final String TAG = "AndroidCameraApi";
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     private static final int REQUEST_CAMERA_PERMISSION = 200;
     Rect zoom;
     int selectedCameraId= 0;
-    File photoFile; //çekilen resimin adı
-    String currentPhotoPath; //yolu
-   FileOperations  fileOperations;
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -105,148 +89,28 @@ public class TakePhotoFragment extends Fragment {
     private TextureView textureView;
     private String cameraId;
     private Size imageDimension;
-    TextureView.SurfaceTextureListener textureListener;
-    private ImageView imageView;
-    public TakePhotoFragment() {
 
-    }
-
-    public static TakePhotoFragment newInstance() {
-        return new TakePhotoFragment();
-
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        userActions = new UserActions();
-
-    }
-
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View v = inflater.inflate(R.layout.fragment_take_photo, container, false);
-
-        Button takePhotoButton = v.findViewById(R.id.takephotobutton);
-         textureListener = new TextureView.SurfaceTextureListener() {
-
-            @Override
-            public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-                //open your camera here
-                openCamera();
-            }
-
-            @Override
-            public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-                // Transform you image captured size according to the surface width and height
-            }
-
-            @Override
-            public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-                return false;
-            }
-
-            @Override
-            public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-            }
-        };
-        imageView = (v.findViewById(R.id.phototaken));
-
-        fileOperations = new FileOperations();
-
-        textureView = (TextureView) v.findViewById(R.id.texture);
-        assert textureView != null;
-        textureView.setSurfaceTextureListener(textureListener);
-        takePictureButton = (Button) v.findViewById(R.id.btn_takepicture);
-        zoomvalue= v.findViewById(R.id.zoom);
-        assert takePictureButton != null;
-        ;
-        takePictureButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                takePicture();
-            }
-        });
-
-        //ZOOM ayarlama
-        v.setOnTouchListener(new View.OnTouchListener(){
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                try {
-                    System.out.println("ekrana dokunuldu");
-                    //ekrana zoom seviyesini yazdırma
-                    zoomvalue.setText("Zoom "+String.valueOf(zoom_level*100/80));
-                    CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
-                    CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
-                    float maxzoom = (characteristics.get(CameraCharacteristics.SCALER_AVAILABLE_MAX_DIGITAL_ZOOM)) * 10;
-                    System.out.println("max zoom : "+ maxzoom);
-                    Rect m = characteristics.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE);
-                    int action = event.getAction();
-                    float current_finger_spacing;
-
-                    if (event.getPointerCount() > 1) {
-                        // Multi touch logic
-                        current_finger_spacing = getFingerSpacing(event);
-                        if (finger_spacing != 0) {
-                            if (current_finger_spacing > finger_spacing && maxzoom > zoom_level) {
-                                zoom_level++;
-                            } else if (current_finger_spacing < finger_spacing && zoom_level > 1) {
-                                zoom_level--;
-                            }
-                            int minW = (int) (m.width() / maxzoom);
-                            int minH = (int) (m.height() / maxzoom);
-                            int difW = m.width() - minW;
-                            int difH = m.height() - minH;
-                            int cropW = difW / 100 * (int) zoom_level;
-                            int cropH = difH / 100 * (int) zoom_level;
-                            cropW -= cropW & 3;
-                            cropH -= cropH & 3;
-                            zoom = new Rect(cropW, cropH, m.width() - cropW, m.height() - cropH);
-
-
-                            captureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, zoom);
-                        }
-                        finger_spacing = current_finger_spacing;
-                    } else {
-                        if (action == MotionEvent.ACTION_UP) {
-                            //single touch logic
-                        }
-                    }
-
-                    try {
-                        cameraCaptureSessions.setRepeatingRequest(captureRequestBuilder.build(), null, mBackgroundHandler);
-                    } catch (CameraAccessException e) {
-                        e.printStackTrace();
-                    } catch (NullPointerException ex) {
-                        ex.printStackTrace();
-                    }
-                } catch (CameraAccessException e) {
-                    throw new RuntimeException("can not access camera.", e);
-                }
-                return true;
-            }
-        });
-        return v;
-
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.e(TAG, "onResume");
-        startBackgroundThread();
-        if (textureView.isAvailable()) {
+    TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
+        @Override
+        public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+            //open your camera here
             openCamera();
-            ;
-        } else {
-            textureView.setSurfaceTextureListener(textureListener);
         }
-    }
 
+        @Override
+        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+            // Transform you image captured size according to the surface width and height
+        }
+
+        @Override
+        public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+            return false;
+        }
+
+        @Override
+        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+        }
+    };
     private ImageReader imageReader;
     private File file;
     private boolean mFlashSupported;
@@ -257,7 +121,6 @@ public class TakePhotoFragment extends Fragment {
             //This is called when the camera is open
             Log.e(TAG, "onOpened");
             cameraDevice = camera;
-
             createCameraPreview();
         }
 
@@ -278,13 +141,30 @@ public class TakePhotoFragment extends Fragment {
         @Override
         public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
             super.onCaptureCompleted(session, request, result);
-            Toast.makeText(getContext().getApplicationContext(), "Saved:" + file, Toast.LENGTH_SHORT).show();
+            Toast.makeText(Camera2Api.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
             createCameraPreview();
         }
     };
     private HandlerThread mBackgroundThread;
 
-
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_camera2api);
+        textureView = (TextureView) findViewById(R.id.texture);
+        assert textureView != null;
+        textureView.setSurfaceTextureListener(textureListener);
+        takePictureButton = (Button) findViewById(R.id.btn_takepicture);
+        zoomvalue= findViewById(R.id.zoom);
+        assert takePictureButton != null;
+        ;
+        takePictureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takePicture();
+            }
+        });
+    }
 
     protected void startBackgroundThread() {
         mBackgroundThread = new HandlerThread("Camera Background");
@@ -313,19 +193,13 @@ public class TakePhotoFragment extends Fragment {
         }
     }
 
-
-  /*******************FOTO çekme ????????????????*************/
-
-
-
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     protected void takePicture() {
         if (null == cameraDevice) {
             Log.e(TAG, "cameraDevice is null");
             return;
         }
-        CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
+        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
 
         try {
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraDevice.getId());
@@ -351,39 +225,28 @@ public class TakePhotoFragment extends Fragment {
             captureBuilder.set(CaptureRequest.SCALER_CROP_REGION, zoom);
 
             // Orientation
-            int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
+            int rotation = getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
-            final File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/PlantInsta.jpg");
-
+            final File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/pic.jpg");
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Image image = null;
-
-                            image = reader.acquireLatestImage();
-                            ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-                            byte[] bytes = new byte[buffer.capacity()];
-                            buffer.get(bytes);
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-                            //int degree = fileOperations.getImageRotation(photoFile);
-                           // bitmap = fileOperations.getBitmapRotatedByDegree(bitmap, 90);
-                            /**
-                             * eğer resimi imageview e koymak istersen
-                             *  imageView.setImageBitmap(bitmap); ekle
-                             */
-                       try {
-                                save(bytes);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-
+                    Image image = null;
+                    try {
+                        image = reader.acquireLatestImage();
+                        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+                        byte[] bytes = new byte[buffer.capacity()];
+                        buffer.get(bytes);
+                        save(bytes);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (image != null) {
+                            image.close();
                         }
-                    });
+                    }
                 }
 
                 private void save(byte[] bytes) throws IOException {
@@ -399,35 +262,12 @@ public class TakePhotoFragment extends Fragment {
                 }
             };
             reader.setOnImageAvailableListener(readerListener, mBackgroundHandler);
-
-            final CameraCaptureSession.CaptureCallback captureListener = new CameraCaptureSession.CaptureCallback()
-            {
+            final CameraCaptureSession.CaptureCallback captureListener = new CameraCaptureSession.CaptureCallback() {
                 @Override
-                public void onCaptureCompleted (CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result)
-
-                {
+                public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
-
-                   // Toast.makeText(getActivity(), "Saved:" + file, Toast.LENGTH_SHORT).show();
-
-                    switch (userActions.getFromList()) {
-                        case 0:
-                            userActions.setImageFromGallery(false); //resim galeriden gidiyor mu?
-                            Intent intent = new Intent(getContext(), AddNewPlant.class);
-                            intent.putExtra("selectedimagefromuser", file.getAbsolutePath());
-                            getActivity().finish();                    ; // bu da kapatmak içi
-                            startActivity(intent);
-                            break;
-                        case 1:
-                            userActions.setImageFromGallery(false); //resim galeriden gidiyor mu?
-                            Intent intentf = new Intent(getContext(), UploadPlantFollow.class);
-                            intentf.putExtra("selectedimagefromuser", file.getAbsolutePath());
-                            getActivity().finish();
-                            startActivity(intentf);
-
-                    }
-
-                    createCameraPreview(); // bu da devam etmek için
+                    Toast.makeText(Camera2Api.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
+                    createCameraPreview();
                 }
             };
             cameraDevice.createCaptureSession(outputSurfaces, new CameraCaptureSession.StateCallback() {
@@ -472,7 +312,7 @@ public class TakePhotoFragment extends Fragment {
 
                 @Override
                 public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    Toast.makeText(getActivity(), "Configuration change", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Camera2Api.this, "Configuration change", Toast.LENGTH_SHORT).show();
                 }
             }, null);
         } catch (CameraAccessException e) {
@@ -481,7 +321,7 @@ public class TakePhotoFragment extends Fragment {
     }
 
     private void openCamera() {
-        CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
+        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         Log.e(TAG, "is camera open");
 
         try {
@@ -491,8 +331,8 @@ public class TakePhotoFragment extends Fragment {
             assert map != null;
             imageDimension = map.getOutputSizes(SurfaceTexture.class)[0];
             // Add permission for camera and let user grant the permission
-            if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA_PERMISSION);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(Camera2Api.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA_PERMISSION);
                 return;
             }
             manager.openCamera(cameraId, stateCallback, null);
@@ -501,15 +341,7 @@ public class TakePhotoFragment extends Fragment {
         }
         Log.e(TAG, "openCamera X");
     }
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == 0) {
-            if (resultCode == Activity.RESULT_OK) {
-                // todo
-
-            }
-        }
-    }
     protected void updatePreview() {
         if (null == cameraDevice) {
 
@@ -540,15 +372,27 @@ public class TakePhotoFragment extends Fragment {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 // close the app
-                Toast.makeText(getContext().getApplicationContext(), "Sorry!!!, you can't use this app without granting permission", Toast.LENGTH_LONG).show();
-                //finish();
+                Toast.makeText(Camera2Api.this, "Sorry!!!, you can't use this app without granting permission", Toast.LENGTH_LONG).show();
+                finish();
             }
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e(TAG, "onResume");
+        startBackgroundThread();
+        if (textureView.isAvailable()) {
+            openCamera();
+            ;
+        } else {
+            textureView.setSurfaceTextureListener(textureListener);
+        }
+    }
 
     @Override
-    public void onPause() {
+    protected void onPause() {
         Log.e(TAG, "onPause");
         //closeCamera();
         stopBackgroundThread();
@@ -573,7 +417,60 @@ public class TakePhotoFragment extends Fragment {
 
     }
     //zoom *****
+    public boolean onTouchEvent(MotionEvent event) {
+        try {
+            System.out.println("ekrana dokunuldu");
+            //ekrana zoom seviyesini yazdırma
+            zoomvalue.setText("Zoom "+String.valueOf(zoom_level*100/80));
+            CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+            CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
+            float maxzoom = (characteristics.get(CameraCharacteristics.SCALER_AVAILABLE_MAX_DIGITAL_ZOOM)) * 10;
+            System.out.println("max zoom : "+ maxzoom);
+            Rect m = characteristics.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE);
+            int action = event.getAction();
+            float current_finger_spacing;
 
+            if (event.getPointerCount() > 1) {
+                // Multi touch logic
+                current_finger_spacing = getFingerSpacing(event);
+                if (finger_spacing != 0) {
+                    if (current_finger_spacing > finger_spacing && maxzoom > zoom_level) {
+                        zoom_level++;
+                    } else if (current_finger_spacing < finger_spacing && zoom_level > 1) {
+                        zoom_level--;
+                    }
+                    int minW = (int) (m.width() / maxzoom);
+                    int minH = (int) (m.height() / maxzoom);
+                    int difW = m.width() - minW;
+                    int difH = m.height() - minH;
+                    int cropW = difW / 100 * (int) zoom_level;
+                    int cropH = difH / 100 * (int) zoom_level;
+                    cropW -= cropW & 3;
+                    cropH -= cropH & 3;
+                    zoom = new Rect(cropW, cropH, m.width() - cropW, m.height() - cropH);
+
+
+                    captureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, zoom);
+                }
+                finger_spacing = current_finger_spacing;
+            } else {
+                if (action == MotionEvent.ACTION_UP) {
+                    //single touch logic
+                }
+            }
+
+            try {
+                cameraCaptureSessions.setRepeatingRequest(captureRequestBuilder.build(), null, mBackgroundHandler);
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
+            } catch (NullPointerException ex) {
+                ex.printStackTrace();
+            }
+        } catch (CameraAccessException e) {
+            throw new RuntimeException("can not access camera.", e);
+        }
+        return true;
+    }
 
 
     //Determine the space between the first two fingers
@@ -584,25 +481,4 @@ public class TakePhotoFragment extends Fragment {
 
         return (float) Math.sqrt(x * x + y * y);
     }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-    }
-
 }
-/*
-  Bitmap  photoFile2Bitmap = fileOperations.getStreamByteFromImage(photoFile);
-                photoFile2Bitmap = fileOperations.getBitmapRotatedByDegree(photoFile2Bitmap,270);
-
-                FileOutputStream outStream = null;
-                try {
-                    outStream = new FileOutputStream(photoFile);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-              photoFile2Bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
- */

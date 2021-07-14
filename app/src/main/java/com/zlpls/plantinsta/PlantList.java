@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
 
 import androidx.appcompat.app.ActionBar;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.zlpls.plantinsta.menulist.UserMenuList;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -30,15 +32,15 @@ public class PlantList extends AppCompatActivity {
     UserActions userActions = new UserActions();
     FragmentTransaction fragmentTransaction;
     //BottomAppBar bottomAppBar;
-    FirestoreRecyclerOptions<PlantModel> options, filteredListOptions;
+
 
     BottomNavigationView bottomAppBar;
     private FirebaseAuth mAuth;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference plantReference ;
     String plantinstauser,data;
-    private com.zlpls.plantinsta.AddPlantAdapter adapter;
-    Query query;
+    private AddPlantAdapter adapter;
+RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,6 @@ public class PlantList extends AppCompatActivity {
         String path = plantinstauser;
         plantReference = db.collection(path);
 
-        setUpRecyclerView(data);
 
         ActionBar actionBar = getSupportActionBar();
         String title = "My PlantInsta Diaries";
@@ -61,11 +62,16 @@ public class PlantList extends AppCompatActivity {
         bottomAppBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         bottomAppBar.setItemIconTintList(null);
 
+       //recycleriew set adaptser
+        recyclerView = findViewById(R.id.plantlistrecyclerview);
+        recyclerView.setHasFixedSize(true);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL));
 
-
-
-
-
+        data =""; // açılışta full gelmesi için data = "" olarak yazılıyor
+        setUpRecyclerView(data);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
 
     }
@@ -73,6 +79,9 @@ public class PlantList extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        adapter.startListening();
+
+        System.out.println("resume" );
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -81,6 +90,9 @@ public class PlantList extends AppCompatActivity {
         MenuItem searchItem = menu.findItem(R.id.search_bar);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Search my diary");
+
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -89,11 +101,12 @@ public class PlantList extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                data = newText;
+                data = (newText).toString().toLowerCase().trim();
+
                 System.out.println("data : " + data);
                 setUpRecyclerView(data);
 
-                adapter.notifyDataSetChanged();
+
                 return false;
             }
         });
@@ -138,50 +151,58 @@ public class PlantList extends AppCompatActivity {
     }
 
     private void setUpRecyclerView(String data) {
-        //original query
-        query = plantReference.orderBy("plantName", Query.Direction.DESCENDING)
-        .whereEqualTo("plantUserMail", mAuth.getCurrentUser().getEmail());
 
-        // filtreli query
-        Query filteredQuery = plantReference.whereGreaterThanOrEqualTo("plantName",data)
-                . whereLessThanOrEqualTo("plantName",data +"\uf8ff")
-                 .whereEqualTo("plantUserMail", mAuth.getCurrentUser().getEmail());
+
+        //original query
+        ;
+       Query query = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
+        .whereEqualTo("plantUserMail", mAuth.getCurrentUser().getEmail())
+
+               .startAt(data).endAt(data + "\uf8ff");;
+
+
 
         //original options
-        options = new FirestoreRecyclerOptions.Builder<PlantModel>()
+        FirestoreRecyclerOptions<PlantModel> options = new FirestoreRecyclerOptions.Builder<PlantModel>()
                 .setQuery(query, PlantModel.class)
-                .setLifecycleOwner(this)
+                 .setLifecycleOwner(this)
                 .build();
-        // filtreli options
-        filteredListOptions = new FirestoreRecyclerOptions.Builder<PlantModel>()
-                .setQuery(filteredQuery, PlantModel.class)
-                .setLifecycleOwner(this)
-                .build();
+        System.out.println("Size :" + options.getSnapshots().size());
+        adapter = new AddPlantAdapter(options);
+
+       adapter.updateOptions(options);
+
+       //recycler view i yeniden çağırman lazım.Yoksa filtre çalışmaz
+       recyclerView.setAdapter(adapter);
+
+
+//.startAt(searchText).endAt(searchText + "\uf8ff");
 
 
 
 
-        if (data != null ){ // data serach yerine yazılan arama sözcüğü
+         // data ,search yerine yazılan arama sözcüğü
+// filtreli query
+        /*
+            Query filteredQuery = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
+                    .whereEqualTo("plantUserMail", mAuth.getCurrentUser().getEmail())
+                    .startAt(data).endAt(data + "\uf8ff");;
+            // filtreli options
+            FirestoreRecyclerOptions<PlantModel> filteredListOptions = new FirestoreRecyclerOptions.Builder<PlantModel>()
+                    .setQuery(filteredQuery, PlantModel.class)
+                    .setLifecycleOwner(this)
+                    .build();
+
             adapter = new com.zlpls.plantinsta.AddPlantAdapter(filteredListOptions);
             System.out.println("query size " + filteredListOptions.getSnapshots().size());
             adapter.updateOptions(filteredListOptions);
             adapter.notifyDataSetChanged();
-        }else {
-            adapter = new com.zlpls.plantinsta.AddPlantAdapter(options);
-
-            adapter.updateOptions(options);
-            adapter.notifyDataSetChanged();
-        }
+*/
 
 
 
-        RecyclerView recyclerView = findViewById(R.id.plantlistrecyclerview);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL));
 
 
-        recyclerView.setAdapter(adapter);
 
 
         //????????SWIPE İLE SİLME*********************
@@ -235,17 +256,18 @@ public class PlantList extends AppCompatActivity {
                 PlantModel plant = documentSnapshot.toObject(PlantModel.class);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(PlantList.this);
-                builder.setMessage(plant.getPlantName() + " isimli bitki günlüğünüz kalıcı olarak silinecektir !")
-                        .setTitle("Günlük Silme")
+                builder.setMessage( " Your " + plant.getPlantName() +" plant diary will be deleted permanently!")
+                        .setTitle("Diary Deleting")
                         .setIcon(R.drawable.alert);
-                builder.setPositiveButton("Evet", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        remove(position);
                         userActions.deleteDocFromFirebase(plant.getPlantName(),"plant",null,plantinstauser);
 
 
                     }
                 });
-                builder.setNegativeButton("Vazgeç", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         System.out.println("vazgeçti");
                     }
@@ -258,6 +280,10 @@ public class PlantList extends AppCompatActivity {
 
             }
         });
+
         adapter.notifyDataSetChanged();
+    }
+    public void remove(int position){
+       adapter.notifyItemRemoved(position);
     }
 }

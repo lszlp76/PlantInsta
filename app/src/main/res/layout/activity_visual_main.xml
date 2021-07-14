@@ -95,7 +95,7 @@
         app:tabIndicatorHeight="5dp"
         app:tabMaxWidth="0dp"
         app:tabMode="fixed"
-        app:tabTextColor="@color/white" />
+       />
 
     <!-- Galeri ve Kameranın olacağı yer -->
 

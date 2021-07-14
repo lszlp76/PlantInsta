@@ -154,7 +154,7 @@ public class UserActions {
 
 
     private void upgradeCounterFor(int countw, String plantname, String type) {
-        System.out.println("sayaç değeri--> " + postCount);
+        System.out.println("sayaç değeri--> " + getPostCountValue());
 
         if (type == "add") {
             countw++;//yeni bitki güncesi eklenirse
@@ -203,7 +203,7 @@ public class UserActions {
                                 @Override
                                 public void onSuccess(Void aVoid) {
 
-                                    Toast.makeText(getApplicationContext(), "Silindi", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getApplicationContext(), "Silindi", Toast.LENGTH_SHORT).show();
 
 
                                 }
@@ -231,7 +231,7 @@ public class UserActions {
                                 @Override
                                 public void onSuccess(Void aVoid) {
 
-                                    Toast.makeText(getApplicationContext(), "Silindi", Toast.LENGTH_SHORT).show();
+                                   // Toast.makeText(getApplicationContext(), "Silindi", Toast.LENGTH_SHORT).show();
 
                                 }
                             })

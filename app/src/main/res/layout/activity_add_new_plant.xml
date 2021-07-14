@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background ="#c8e6c9"
     tools:context=".AddNewPlant">
     <TextView
         android:id="@+id/yenigunluk"
@@ -43,20 +44,22 @@
 
     <EditText
         android:id="@+id/editTextTextPersonName3"
+
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.90"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="5dp"
+        android:autoText="false"
         android:ems="10"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/newplantimageview"
         android:hint="Diary Name"
+        android:inputType="text"
         android:textColor="@color/textColorPlantinsta"
-        android:textStyle="italic|bold"
         android:textSize="16sp"
+        android:textStyle="italic|bold"
+        app:layout_constraintLeft_toLeftOf="parent"
 
-        android:inputType="text" />
+        app:layout_constraintTop_toBottomOf="@id/newplantimageview"
+        app:layout_constraintWidth_percent="0.90" />
 
     <EditText
         android:id="@+id/editTextTextPersonName4"

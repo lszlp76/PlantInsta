@@ -54,7 +54,7 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.Plan
       ;
         plantListHolder.mplantNameText.setText(currentPlant.getPlantName());
         plantListHolder.mplantFirstDate.setText(currentPlant.getplantFirstDate());
-        plantListHolder.mplantPostCount.setText(currentPlant.getPlantPostCount()+" adet günceniz var");
+        plantListHolder.mplantPostCount.setText("You have "+ currentPlant.getPlantPostCount()+" pages.");
         Picasso.get().load(String.valueOf(currentPlant.getPlantAvatar()))
                 .into(plantListHolder.mplantAvatarPicture);
     }
@@ -104,9 +104,10 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.Plan
     class PlantListHolder extends RecyclerView.ViewHolder {
         TextView mplantNameText;
         TextView mplantFirstDate;
-        ImageView mplantAvatarPicture;
+        ImageView mplantAvatarPicture, maddToFavorite;
         TextView mplantPostCount;
         ImageView mGarbage;
+
         //TextView mplantPostNumber;
 
         //TextView plantPostNumber;
@@ -116,6 +117,7 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.Plan
             mplantFirstDate = itemView.findViewById(R.id.plantfirstdate);
             mplantAvatarPicture = itemView.findViewById(R.id.plantavatarpicture);
             mplantPostCount = itemView.findViewById(R.id.plantpostnumber);
+            maddToFavorite = itemView.findViewById(R.id.addtofavorite);
             // mGarbage = itemView.findViewById(R.id.garbageicon);
             // mplantPostNumber= itemView.findViewById(R.id.plantpostnumber);
             itemView.setOnClickListener(new View.OnClickListener() {

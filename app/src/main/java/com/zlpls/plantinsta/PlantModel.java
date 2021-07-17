@@ -7,7 +7,18 @@ public class PlantModel {
     private String plantName;
     private String plantComment;
     private String plantAvatar;
+
+    public Boolean getPlantFavorite() {
+        return plantFavorite;
+    }
+
     private String plantFirstDate;
+
+    public PlantModel(Boolean plantFavorite) {
+        this.plantFavorite = plantFavorite;
+    }
+
+    private Boolean plantFavorite;
 
     public String getPlantImage() {
         return plantImage;

@@ -130,7 +130,7 @@ public class TakePhotoFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_take_photo, container, false);
 
-        Button takePhotoButton = v.findViewById(R.id.takephotobutton);
+        Button takePhotoButton = v.findViewById(R.id.btn_takepicture);
          textureListener = new TextureView.SurfaceTextureListener() {
 
             @Override

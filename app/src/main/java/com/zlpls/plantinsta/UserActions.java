@@ -81,12 +81,12 @@ public class UserActions {
     public Context getContext() {
         return context;
     }
+    public void setPostCountValue ( int postCount){
+        UserActions.postCount = postCount;
 
+    }
     public int getPostCountValue() {
-
-        postCountValue = postCount;
-
-        return postCountValue;
+        return postCount;
     }
 
     public void signOutUser(Context context) {

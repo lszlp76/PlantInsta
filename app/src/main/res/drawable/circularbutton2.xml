@@ -4,8 +4,8 @@
         >
         <shape android:shape="oval">
 
-            <solid android:color="@color/colorSplash"/>
-            <stroke android:color="@color/primaryDarkColor" android:width="2dp" />
+            <solid android:color="@color/primaryVariant"/>
+            <stroke android:color="@color/colorSplash" android:width="2dp" />
 
 
         </shape>

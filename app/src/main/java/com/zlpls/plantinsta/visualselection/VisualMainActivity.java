@@ -71,9 +71,9 @@ public class VisualMainActivity extends AppCompatActivity {
 
         tabs.getTabAt(1).setIcon(R.drawable.ic_addimage);
         tabs.getTabAt(0).setIcon(R.drawable.ic_takephoto);
-        tabs.setBackgroundColor(Color.parseColor("#c8e6c9"));
+        tabs.setBackgroundColor(Color.parseColor("#eeffff"));
 
-        tabs.setSelectedTabIndicatorColor(Color.parseColor("#c43e00"));
+        tabs.setSelectedTabIndicatorColor(Color.parseColor("#4FC3F7"));
 //#c8e6c9
         Intent intentf = getIntent();
         fromList = intentf.getIntExtra("fromList", 0);

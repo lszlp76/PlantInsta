@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,11 +17,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.PostHolder> {
-    FileOperations fileOperations;
+
     private OnItemClickListener mlistener;
 
     private ArrayList<PlantModel> plants;
-    UserActions userActions;
+
 
 
     public RecyclerAdapter(ArrayList<PlantModel> plants) {
@@ -51,7 +52,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.PostHo
         //  holder.dateText.setText(datesList.get(position));
         holder.commentText.setText(plants.get(position).getPlantComment());
         holder.dateText.setText(plants.get(position).getplantFirstDate());
-
+        holder.editableComment.setVisibility(View.INVISIBLE);
         // path'i içeren bir file objesi oluştur
 
       /*
@@ -71,22 +72,22 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.PostHo
     @Override
     public int getItemCount() {
 
-        // kaç tane row olacak buradan
+
         return plants.size();
         // return imagesList.size();
     }
 
-    public void deleteItem() {
+    public PlantModel deleteItem(int position) {
 
 
+        return plants.remove(position);
     }
 
 
     public interface OnItemClickListener {
         void onItemClick(int position);
-
         void onDeleteClick(int position);
-
+        void onModifyClick (int position);
         void onShareClick(int position, Bitmap bmp);
         void onDownloadClick ( int position, Bitmap bmp);
 
@@ -98,7 +99,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.PostHo
         ImageView imageView;
         TextView dateText;
         TextView commentText;
-        ImageView shareButton, deleteButton,downloadButton;
+        ImageView shareButton, deleteButton,downloadButton,modifyButton;
+        EditText editableComment;
 
         public PostHolder(@NonNull final View itemView, OnItemClickListener listener) {
             super(itemView);
@@ -108,6 +110,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.PostHo
             shareButton = itemView.findViewById(R.id.share);
             deleteButton = itemView.findViewById(R.id.garbage);
             downloadButton = itemView.findViewById(R.id.download);
+            modifyButton = itemView.findViewById(R.id.modify);
+            editableComment = itemView.findViewById(R.id.newModifiedComment);
+            modifyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                           editableComment.setVisibility(itemView.VISIBLE);
+                            listener.onModifyClick(position);
+                        }
+                    }
+                }
+            });
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override

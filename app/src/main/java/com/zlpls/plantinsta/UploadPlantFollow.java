@@ -8,6 +8,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -43,6 +44,7 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -95,7 +97,8 @@ public class UploadPlantFollow extends AppCompatActivity {
 
         //   Intent intent = getIntent();
         plantMarkerforUpload = userActions.getPlantNameToModify();//intent.getStringExtra("mark");
-
+        System.out.println("sayaç "+userActions.getPostCountValue());// --> plant.get(index).getPlantPostCount() çalışır.burad
+        System.out.println("adı "+userActions.getPlantNameToModify()); // sayac değerini ekrana yazdırmak
         ActionBar actionBar = getSupportActionBar();
 
         actionBar.setTitle("New page for "+plantMarkerforUpload);
@@ -162,6 +165,7 @@ followfab.setOnClickListener(new View.OnClickListener() {
         //FeedActivity den tıklananınca gelen plantmark bilgisi
 
 
+    System.out.println("Feed adı : "+ userActions.getPlantNameToModify());
 
     }
 
@@ -180,7 +184,7 @@ followfab.setOnClickListener(new View.OnClickListener() {
                 break;
             case R.id.photo:
                 if (mUploadTask != null && mUploadTask.isInProgress()){
-                    Toast.makeText(UploadPlantFollow.this,"Yükleme devam ediyor",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UploadPlantFollow.this,"Uploading is on going.",Toast.LENGTH_SHORT).show();
                 }else {
                     upload();
                 }
@@ -237,11 +241,34 @@ followfab.setOnClickListener(new View.OnClickListener() {
 
                             String plantinstauser = firebaseAuth.getCurrentUser().getEmail();
                             String path = plantinstauser;
+
+                            /*Sayacı arttırmak */
+
+                            int newCounter = userActions.getPostCountValue() + 1;
+                            firebaseFirestore.collection(plantinstauser).document(plantMarkerforUpload)
+                                    .update("plantPostCount", String.valueOf(newCounter))
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            ;
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            System.out.println("Error updating document");
+                                        }
+                                    });
+
+                            /* Sayacı arttırma sonu */
                             /*****Gonderilecek paket hashmap**********************/
                             HashMap<String, Object> postData = new HashMap<>();
                             postData.put("image", downloadUrl);
                             postData.put("comment", comment);
                             postData.put("date", FieldValue.serverTimestamp());
+
+
+
                             firebaseFirestore.collection(plantinstauser)
                                     .document(plantMarkerforUpload)
                                     .collection("history")
@@ -252,13 +279,16 @@ followfab.setOnClickListener(new View.OnClickListener() {
 
                                     Toast.makeText(UploadPlantFollow.this, "Added", Toast.LENGTH_LONG).show();
 
-                                    Intent intent = new Intent(getApplicationContext(), PlantList.class);
+
+                                    Intent intent = new Intent(getApplicationContext(), FeedActivity.class);
+                                    intent.putExtra("mark", userActions.getPlantNameToModify());
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
                                     finish();
-                                    //int counter = 0;
-                                    //userActions.setPostCountFor(UploadPlantFollow.this,plantMarkerforUpload,"add","1");
-                                    //System.out.println("değer "+ userActions.getPostCountValue());
+
+
+
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override

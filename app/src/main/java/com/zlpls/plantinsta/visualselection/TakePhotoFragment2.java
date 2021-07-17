@@ -69,7 +69,7 @@ public class TakePhotoFragment2 extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_take_photo, container, false);
 
-        Button takePhotoButton = v.findViewById(R.id.takephotobutton);
+        Button takePhotoButton = v.findViewById(R.id.btn_takepicture);
         imageView = (v.findViewById(R.id.phototaken));
         targetW = imageView.getWidth();
         targetH = imageView.getHeight();

@@ -8,5 +8,10 @@
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.widget.SearchView"
 
+        android:title="TODO" />
+    <item android:id="@+id/sortFav"
+          android:icon="@drawable/ic__favorite"
+        app:showAsAction="ifRoom|"
+        app:actionViewClass="android.widget.ToggleButton"
         />
 </menu>

@@ -8,7 +8,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.zlpls.plantinsta.menulist.UserMenuList;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -40,6 +44,7 @@ public class PlantList extends AppCompatActivity {
     private CollectionReference plantReference ;
     String plantinstauser,data;
     private AddPlantAdapter adapter;
+    FirestoreRecyclerOptions<PlantModel> options ;
 RecyclerView recyclerView;
 
     @Override
@@ -101,9 +106,10 @@ RecyclerView recyclerView;
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                data = (newText).toString().toLowerCase().trim();
+                data = (newText).toLowerCase().trim();
 
                 System.out.println("data : " + data);
+
                 setUpRecyclerView(data);
 
 
@@ -163,17 +169,18 @@ RecyclerView recyclerView;
 
 
         //original options
-        FirestoreRecyclerOptions<PlantModel> options = new FirestoreRecyclerOptions.Builder<PlantModel>()
+        options = new FirestoreRecyclerOptions.Builder<PlantModel>()
                 .setQuery(query, PlantModel.class)
                  .setLifecycleOwner(this)
                 .build();
         System.out.println("Size :" + options.getSnapshots().size());
-        adapter = new AddPlantAdapter(options);
 
-       adapter.updateOptions(options);
+       // adapter = new AddPlantAdapter(options);
+
+       // adapter.updateOptions(options);
 
        //recycler view i yeniden çağırman lazım.Yoksa filtre çalışmaz
-       recyclerView.setAdapter(adapter);
+
 
 
 //.startAt(searchText).endAt(searchText + "\uf8ff");
@@ -183,7 +190,23 @@ RecyclerView recyclerView;
 
          // data ,search yerine yazılan arama sözcüğü
 // filtreli query
-        /*
+        if (data == "q"){
+
+            Query filteredQueryFavo = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
+                    .whereEqualTo("plantFavorite", true);
+
+            // filtreli options
+            FirestoreRecyclerOptions<PlantModel> filteredListOptions = new FirestoreRecyclerOptions.Builder<PlantModel>()
+                    .setQuery(filteredQueryFavo, PlantModel.class)
+                    .setLifecycleOwner(this)
+                    .build();
+
+            adapter = new com.zlpls.plantinsta.AddPlantAdapter(filteredListOptions);
+            System.out.println("query size " + filteredListOptions.getSnapshots().size());
+            adapter.updateOptions(filteredListOptions);
+            adapter.notifyDataSetChanged();
+        }
+        if ( data == null || data !=""){
             Query filteredQuery = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
                     .whereEqualTo("plantUserMail", mAuth.getCurrentUser().getEmail())
                     .startAt(data).endAt(data + "\uf8ff");;
@@ -197,7 +220,13 @@ RecyclerView recyclerView;
             System.out.println("query size " + filteredListOptions.getSnapshots().size());
             adapter.updateOptions(filteredListOptions);
             adapter.notifyDataSetChanged();
-*/
+        }else {
+            adapter = new com.zlpls.plantinsta.AddPlantAdapter(options);
+
+            adapter.updateOptions(options);
+        }
+        recyclerView.setAdapter(adapter);
+
 
 
 
@@ -236,7 +265,49 @@ RecyclerView recyclerView;
 
                 Intent intent = new Intent(PlantList.this, FeedActivity.class);
                 intent.putExtra("mark", plant.getPlantName());
+                intent.putExtra("postCounterValue", plant.getPlantPostCount());
                 startActivity(intent);
+            }
+
+            @Override
+            public void onAddPlantToFavorite(int position) {
+                System.out.println("add to fav + "+ position );
+
+            db.collection(plantinstauser).document(options.getSnapshots().get(position).getPlantName())
+
+                        .update("plantFavorite", true)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                System.out.println("DocumentSnapshot successfully updated!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                System.out.println("Error updating document");
+                            }
+                        });
+            }
+
+            @Override
+            public void onDelPlantFromFavorite(int position) {
+                System.out.println("del from fav + "+ position );
+                db.collection(plantinstauser).document(options.getSnapshots().get(position).getPlantName())
+
+                        .update("plantFavorite", false)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                System.out.println("DocumentSnapshot successfully updated!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                System.out.println("Error updating document");
+                            }
+                        });
             }
 
             @Override
@@ -263,7 +334,7 @@ RecyclerView recyclerView;
                     public void onClick(DialogInterface dialog, int id) {
                         remove(position);
                         userActions.deleteDocFromFirebase(plant.getPlantName(),"plant",null,plantinstauser);
-
+                        adapter.notifyDataSetChanged();
 
                     }
                 });

@@ -13,9 +13,11 @@ import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
@@ -24,6 +26,8 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,7 +50,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class FeedActivity extends AppCompatActivity {
-    public static ArrayList<Integer> postCount;
+    public  ArrayList<Integer> postCount;
     RecyclerView recyclerView;
     Timestamp ts;
     TextView positionName;
@@ -57,12 +61,14 @@ public class FeedActivity extends AppCompatActivity {
     ArrayList<String> idtodelFromFB;
     ArrayList<String> postCountFromFB;
     ArrayList<String> list;
-    ArrayList<PlantModel> plant = new ArrayList<PlantModel>();
+   public static ArrayList<PlantModel> plant = new ArrayList<PlantModel>();
     BottomNavigationView bottomAppBar;
     /***********************************************************************/
     RecyclerAdapter recyclerAdapter;
     UserActions userActions = new UserActions();
-    String plantinstauser;
+    String plantinstauser,postCounterValue;
+    EditText modifiedComment;
+
     private String plantMarker;
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
@@ -82,9 +88,10 @@ public class FeedActivity extends AppCompatActivity {
 
                 break;
             case R.id.photo:
+                userActions.setPlantNameToModify(plantMarker);//adını yazdırıyor
+                userActions.setPostCountValue( plant.size()); //bitkideki feed sayısı
                 Intent intent = new Intent(FeedActivity.this, VisualMainActivity.class);
                 intent.putExtra("fromList", 1);
-                userActions.setPlantNameToModify(plantMarker);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
@@ -104,6 +111,10 @@ public class FeedActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         plantMarker = intent.getStringExtra("mark");
+        postCounterValue = intent.getStringExtra("postCounterValue");
+        System.out.println("sayaç "+postCounterValue);// --> plant.get(index).getPlantPostCount() çalışır.burad
+        modifiedComment = findViewById(R.id.newModifiedComment);
+
         //setupBottomAppBar();
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -120,12 +131,13 @@ public class FeedActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.feedlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // recyclerAdapter = new RecyclerAdapter(commentsFromFB, imagesFromFB, datesFromFB);
         recyclerAdapter = new RecyclerAdapter(plant);
         recyclerView.setAdapter(recyclerAdapter);
         recyclerView.setHasFixedSize(true);
-        positionName = findViewById(R.id.FeedActivity_Name);
-        positionName.setText(plantMarker);
+
+        recyclerView.setNestedScrollingEnabled(true);
+        recyclerAdapter.notifyDataSetChanged();
+
         bottomAppBar = findViewById(R.id.bottom_navigation);
 
         bottomAppBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -143,13 +155,39 @@ public class FeedActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(title);
         getDataFromFirestore();
 
-        recyclerView.setNestedScrollingEnabled(true);
-        recyclerAdapter.notifyDataSetChanged();
     }
+
+
+    private void newPostCount() {
+        /*Sayacı azaltmak*/
+
+        int newCounter = Integer.parseInt(postCounterValue) - 1;
+        System.out.println(newCounter+ "yeni deper");
+
+        firebaseFirestore.collection(plantinstauser).document(plantMarker)
+                .update("plantPostCount", String.valueOf(newCounter))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("Error updating document");
+                    }
+                });
+
+        /** Sayacı arttırma sonu */
+    }
+
+
 
     @Override
     protected void onResume() {
         super.onResume();
+
         recyclerAdapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -168,14 +206,30 @@ public class FeedActivity extends AppCompatActivity {
 
             @Override
             public void onDeleteClick(int position) {
-                remove(position);
+
                 //userActions.setPostCountFor(getApplicationContext(),plantMarker, "del",idtodelFromFB.get(position));
                 userActions.deleteDocFromFirebase(plantMarker, "feed", idtodelFromFB.get(position), plantinstauser);
-                Intent intentq = new Intent(FeedActivity.this, PlantList.class);
-                intentq.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intentq);
-                finish();
 
+                plant.remove(position); //önce plantten veriyi kaldır
+                newPostCount();
+
+                recyclerAdapter.notifyItemChanged(position);
+                recyclerAdapter.notifyDataSetChanged();
+
+
+
+
+
+
+
+            }
+
+            @Override
+            public void onModifyClick(int position) {
+                //plant.get(position).setPlantComment("Deneme yorumu");
+              //  modifiedComment.setVisibility(View.VISIBLE);
+
+                //updateComment(position,"deneme yorumu");
             }
 
             @Override
@@ -185,15 +239,36 @@ public class FeedActivity extends AppCompatActivity {
 
             @Override
             public void onDownloadClick(int position, Bitmap bmp) {
-                downloadBitmap(bmp, plantMarker + "@" + datesFromFB.get(position));
+                downloadBitmap(bmp, plantMarker + "on" + datesFromFB.get(position));
 
             }
         });
     }
 
+    private void updateComment(int position, String newComment) {
+
+        firebaseFirestore.collection(plantinstauser).document(plantMarker)
+                .collection("history")
+                .document(idtodelFromFB.get(position))
+                .update("favorite", (newComment))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("Error updating document");
+                    }
+                });
+    }
+
     public void remove(int position) {
 
-        recyclerAdapter.notifyItemRemoved(position);
+        recyclerAdapter.deleteItem(position);
+
     }
 
     @Override
@@ -238,7 +313,7 @@ public class FeedActivity extends AppCompatActivity {
            MediaStore.Images.Media.insertImage(getContentResolver(),bitmap, fileNames, "PlantInsta");
 
             Toast.makeText(getApplicationContext(), fileNames +
-                    "güncesi " + getExternalFilesDir(Environment.DIRECTORY_PICTURES) + " altına indirildi.", Toast.LENGTH_LONG).show();
+                    "Downloaded into " + getExternalFilesDir(Environment.DIRECTORY_PICTURES) , Toast.LENGTH_LONG).show();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -317,7 +392,7 @@ public class FeedActivity extends AppCompatActivity {
 
                     }
                     if (value != null) {
-
+plant.clear(); // bunu koymazsan her seferinde üzerine ekler
                         for (DocumentSnapshot snapshot : value.getDocuments()) {
 
                             Map<String, Object> data = snapshot.getData();// gönderilen hashmap leri alıyor
@@ -336,6 +411,7 @@ public class FeedActivity extends AppCompatActivity {
                             idtodelFromFB.add(id);
                             plant.add(new PlantModel(downloadurl, "", comment, "", date, "", ""));
                             //System.out.println("plant:" + plant);
+                            System.out.println("Feed activite get içinde sayı "+plant.size());
                             recyclerAdapter.notifyDataSetChanged();
 
 

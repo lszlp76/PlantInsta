@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background ="#c8e6c9"
     tools:context=".AddNewPlant">
-    <TextView
+    <!--TextView
         android:id="@+id/yenigunluk"
         android:gravity="center"
         android:text="New Plant Diary"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintTop_toBottomOf="@id/newplantimageview"
 
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints" /-->
 
     <ImageView
         android:id="@+id/newplantimageview"

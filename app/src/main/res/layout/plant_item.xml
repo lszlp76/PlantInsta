@@ -6,12 +6,12 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    app:cardBackgroundColor="#e1f5fe"
+    app:cardBackgroundColor="#558b2f"
     app:cardCornerRadius="15dp">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:padding="2dp">
 
         <!--com.google.android.material.imageview.ShapeableImageView
@@ -27,53 +27,93 @@
         <ImageView
             android:id="@+id/plantavatarpicture"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="200dp"
             android:layout_margin="5dp"
 
             android:scaleType="fitXY"
 
-            android:textColor="@color/colorPrimaryDark"/>
+            android:textColor="@color/windowbackground"/>
 
         <TextView
             android:id="@+id/plantnametext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-android:layout_below="@id/plantavatarpicture"
+          android:layout_below="@id/plantavatarpicture"
 
-            android:layout_centerHorizontal="true"
-            android:paddingRight="30dp"
+            android:layout_alignLeft="@id/plantavatarpicture"
+            android:paddingRight="0dp"
             android:maxLines="1"
             android:text="Title"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/windowbackground"
             android:textSize="18sp"
             android:textStyle="bold" />
+        <ToggleButton
+            android:id="@+id/addtofavorite"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/plantavatarpicture"
+
+            android:layout_alignRight="@id/plantnametext"
+
+            android:layout_alignParentRight="true"
+             />
+
+        <ImageView
+            android:id="@+id/tree"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/plantnametext"
+
+
+            app:srcCompat="@drawable/ic__tree" />
+        <TextView
+
+           android:id="@+id/firstplanted"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+           android:layout_below="@id/plantnametext"
+
+             android:layout_toRightOf="@+id/tree"
+
+            android:text="Created on:"
+            android:textColor="@color/windowbackground"
+            android:textSize="11sp" />
 
         <TextView
 
             android:id="@+id/plantfirstdate"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/firstplanted"
             android:layout_below="@id/plantnametext"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
+            android:text="31.13.2021"
 
-            android:text="30.12.2010"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="14sp" />
+            android:textColor="@color/windowbackground"
+            android:textSize="11sp" />
+        <ImageView
+            android:id="@+id/pages"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/tree"
 
+android:layout_marginTop="3dp"
+            app:srcCompat="@drawable/ic__book" />
         <TextView
             android:id="@+id/plantpostnumber"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_below="@id/plantfirstdate"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@id/pages"
+            android:textColor="@color/windowbackground"
 
-
-            android:text="0 Günce"
-            android:textColor="@color/secondaryColor"
-            android:textSize="12sp"
-            android:visibility="invisible" />
+            android:text="You have "
+            android:textSize="11sp"
+            />
 
         <!--ImageView
             android:id="@+id/garbageicon"

@@ -311,8 +311,8 @@ public class AddNewPlant extends AppCompatActivity {
             //yeni isimi al
             String name = newplantname.getText().toString();
 
-           String newPlantMarkerName = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase(Locale.ENGLISH);
-
+           //String newPlantMarkerName = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase(Locale.ENGLISH);
+            String newPlantMarkerName = name.toLowerCase(Locale.ENGLISH);
             //selectedImage ı küçült
             selectedImage = makeSmallerImage(selectedImage, 800);
             //burada bitmap yaratılmış oluyor!!
@@ -529,8 +529,8 @@ public class AddNewPlant extends AppCompatActivity {
 
     public void makeAvatar() {
         String name= (newplantname.getText().toString());
-        String newPlantMarkerName = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase(Locale.ENGLISH);
-
+      //  String newPlantMarkerName = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase(Locale.ENGLISH);
+        String newPlantMarkerName = name.toLowerCase(Locale.ENGLISH);
         System.out.println("isim "+ newPlantMarkerName);
         selectedImageAsIcon = makeSmallerImage(selectedImage, 300);
         ByteArrayOutputStream byteArrayOutputStreamAvatar = new ByteArrayOutputStream();

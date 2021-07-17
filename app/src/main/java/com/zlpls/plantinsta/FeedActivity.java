@@ -1,17 +1,16 @@
 package com.zlpls.plantinsta;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -53,6 +51,7 @@ public class FeedActivity extends AppCompatActivity {
     public  ArrayList<Integer> postCount;
     RecyclerView recyclerView;
     Timestamp ts;
+    PlantModel plantModel;
     TextView positionName;
     /*******bunlar firebaseden alacağımız verilerin yazılacağı diziler********/
     ArrayList<String> commentsFromFB;
@@ -61,6 +60,7 @@ public class FeedActivity extends AppCompatActivity {
     ArrayList<String> idtodelFromFB;
     ArrayList<String> postCountFromFB;
     ArrayList<String> list;
+    public String plantFavorite;
    public static ArrayList<PlantModel> plant = new ArrayList<PlantModel>();
     BottomNavigationView bottomAppBar;
     /***********************************************************************/
@@ -70,6 +70,7 @@ public class FeedActivity extends AppCompatActivity {
     EditText modifiedComment;
 
     private String plantMarker;
+
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
 
@@ -104,14 +105,123 @@ public class FeedActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        /*Fav menu */
+        MenuInflater inflater = getMenuInflater();
+       inflater.inflate (R.menu.favmenu,menu);
+
+       /*
+       addFav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+           @Override
+           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+               addFav.setBackgroundDrawable(Drawable.createFromPath("@drawable/ic__favoritefilled"));
+               System.out.println("basıldı");
+               if (isChecked){
+                   addToFavorite();
+               }else{
+                   delFromFavorite();
+               }
+           }
+       });
+*/
+        return true;
+    }
+
+    private void delFromFavorite() {
+        firebaseFirestore.collection(plantinstauser).document(plantMarker)
+
+                .update("plantFavorite", false)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("Error updating document");
+                    }
+                });
+    }
+
+    private void addToFavorite() {
+
+        firebaseFirestore.collection(plantinstauser).document(plantMarker)
+
+                .update("plantFavorite", true)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("Error updating document");
+                    }
+                });
+    }
+
+    private boolean isChecked = false;
+    MenuItem itemAdd,itemDel;
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        isChecked = Boolean.parseBoolean(plantFavorite);
+       itemAdd = menu.findItem(R.id.addFav);
+        itemDel = menu.findItem(R.id.delFav);
+        if (isChecked) {
+            itemAdd.setVisible(false);
+            itemDel.setVisible(true);
+
+        } else {
+            itemAdd.setVisible(true);
+            itemDel.setVisible(false);
+
+
+
+
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case (R.id.addFav):
+                addToFavorite();
+                itemAdd.setVisible(false);
+                itemDel.setVisible(true);
+                Toast.makeText(getApplicationContext(), "Your diary has been added to favorites",Toast.LENGTH_SHORT).show();
+
+                break;
+            case ( R.id.delFav):
+                delFromFavorite();
+                itemAdd.setVisible(true);
+                itemDel.setVisible(false);
+                Toast.makeText(getApplicationContext(), "Your diary has been deleted from favorites",Toast.LENGTH_SHORT).show();
+
+            default:
+                return false;
+        }
+        return true;
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
+
         Intent intent = getIntent();
         plantMarker = intent.getStringExtra("mark");
         postCounterValue = intent.getStringExtra("postCounterValue");
+        plantFavorite = intent.getStringExtra("plantFavorite");
         System.out.println("sayaç "+postCounterValue);// --> plant.get(index).getPlantPostCount() çalışır.burad
         modifiedComment = findViewById(R.id.newModifiedComment);
 
@@ -147,6 +257,7 @@ public class FeedActivity extends AppCompatActivity {
         Menu menu = bottomAppBar.getMenu();
         menu.findItem(R.id.photo).setIcon(R.drawable.ic__send);
         menu.findItem(R.id.photo).setTitle("Add New Page");
+
 
 
         ActionBar actionBar = getSupportActionBar();

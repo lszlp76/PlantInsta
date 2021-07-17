@@ -213,9 +213,10 @@ public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPla
             mplantFirstDate = itemView.findViewById(R.id.plantfirstdate);
             mplantAvatarPicture = itemView.findViewById(R.id.plantavatarpicture);
             mplantPostCount = itemView.findViewById(R.id.plantpostnumber);
+
             mplantAddToFavorite = itemView.findViewById(R.id.addtofavorite);
 
-
+/*
             mplantAddToFavorite.setOnClickListener(new View.OnClickListener() {
                                                        @Override
                                                        public void onClick(View v) {
@@ -232,7 +233,7 @@ public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPla
                  }
                  };
 
-                                                   });
+                                                   });*/
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

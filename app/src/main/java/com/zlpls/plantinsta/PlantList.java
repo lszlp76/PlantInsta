@@ -121,6 +121,20 @@ RecyclerView recyclerView;
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected( MenuItem item) {
+
+        switch (item.getItemId()) {
+            case (R.id.favbutton):
+                setUpRecyclerView("plantFavorite");
+
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
 
@@ -190,23 +204,23 @@ RecyclerView recyclerView;
 
          // data ,search yerine yazılan arama sözcüğü
 // filtreli query
-        if (data == "q"){
+        if (data == "plantFavorite"){
 
             Query filteredQueryFavo = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
                     .whereEqualTo("plantFavorite", true);
 
             // filtreli options
-            FirestoreRecyclerOptions<PlantModel> filteredListOptions = new FirestoreRecyclerOptions.Builder<PlantModel>()
+            FirestoreRecyclerOptions<PlantModel> filteredListOptionsFav = new FirestoreRecyclerOptions.Builder<PlantModel>()
                     .setQuery(filteredQueryFavo, PlantModel.class)
                     .setLifecycleOwner(this)
                     .build();
 
-            adapter = new com.zlpls.plantinsta.AddPlantAdapter(filteredListOptions);
-            System.out.println("query size " + filteredListOptions.getSnapshots().size());
-            adapter.updateOptions(filteredListOptions);
+            adapter = new com.zlpls.plantinsta.AddPlantAdapter(filteredListOptionsFav);
+            System.out.println("query size " + filteredListOptionsFav.getSnapshots().size());
+            adapter.updateOptions(filteredListOptionsFav);
             adapter.notifyDataSetChanged();
         }
-        if ( data == null || data !=""){
+        else if ( data == null || data !="" && data !="plantFavorite"){
             Query filteredQuery = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
                     .whereEqualTo("plantUserMail", mAuth.getCurrentUser().getEmail())
                     .startAt(data).endAt(data + "\uf8ff");;
@@ -266,48 +280,21 @@ RecyclerView recyclerView;
                 Intent intent = new Intent(PlantList.this, FeedActivity.class);
                 intent.putExtra("mark", plant.getPlantName());
                 intent.putExtra("postCounterValue", plant.getPlantPostCount());
+                intent.putExtra("plantFavorite",String.valueOf(plant.getPlantFavorite()));
                 startActivity(intent);
             }
 
             @Override
             public void onAddPlantToFavorite(int position) {
-                System.out.println("add to fav + "+ position );
 
-            db.collection(plantinstauser).document(options.getSnapshots().get(position).getPlantName())
 
-                        .update("plantFavorite", true)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                System.out.println("DocumentSnapshot successfully updated!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                System.out.println("Error updating document");
-                            }
-                        });
+
             }
 
             @Override
             public void onDelPlantFromFavorite(int position) {
-                System.out.println("del from fav + "+ position );
-                db.collection(plantinstauser).document(options.getSnapshots().get(position).getPlantName())
+               ;
 
-                        .update("plantFavorite", false)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                System.out.println("DocumentSnapshot successfully updated!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                System.out.println("Error updating document");
-                            }
-                        });
             }
 
             @Override

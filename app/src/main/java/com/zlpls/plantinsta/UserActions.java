@@ -42,6 +42,16 @@ public class UserActions {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private GoogleSignInClient mGoogleSignInClient;
     private int postCountValue;
+
+    public boolean isPlantFavorite() {
+        return plantFavorite;
+    }
+
+    public void setPlantFavorite(boolean plantFavorite) {
+        this.plantFavorite = plantFavorite;
+    }
+
+    private boolean plantFavorite;
     public static boolean imageFromGallery ;
 
     public boolean isImageFromGallery() {

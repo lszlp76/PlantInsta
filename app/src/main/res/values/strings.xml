@@ -21,12 +21,14 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="take_picture"></string>
-
+<string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="long_message">Your page will be deleted.</string>
     <string-array name="UserMenuList">
         <item>****</item>
         <item>How to use?</item>
         <item>Policy</item>
-        <item>Communication</item>
+        <item>About</item>
         <item>Neseli Bahce Workshop</item>
         <item>Sign out</item>
 

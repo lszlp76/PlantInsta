@@ -1,5 +1,6 @@
 package com.zlpls.plantinsta;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -317,22 +320,34 @@ public class FeedActivity extends AppCompatActivity {
 
             @Override
             public void onDeleteClick(int position) {
+/*
+                AlertDialog.Builder builder = new AlertDialog.Builder(FeedActivity.this);
+                builder.setMessage( " Your diary page will be deleted permanently!")
+                        .setTitle("Pagey Deleting")
+                        .setIcon(R.drawable.alert);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        userActions.deleteDocFromFirebase(plantMarker, "feed", idtodelFromFB.get(position), plantinstauser);
 
-                //userActions.setPostCountFor(getApplicationContext(),plantMarker, "del",idtodelFromFB.get(position));
+                        plant.remove(position); //önce plantten veriyi kaldır
+                        newPostCount();
+                        recyclerAdapter.notifyItemChanged(position);
+                        recyclerAdapter.notifyDataSetChanged();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        System.out.println("vazgeçti");
+                    }
+                });
+                builder.show();
+*/
                 userActions.deleteDocFromFirebase(plantMarker, "feed", idtodelFromFB.get(position), plantinstauser);
 
                 plant.remove(position); //önce plantten veriyi kaldır
                 newPostCount();
-
                 recyclerAdapter.notifyItemChanged(position);
                 recyclerAdapter.notifyDataSetChanged();
-
-
-
-
-
-
-
             }
 
             @Override

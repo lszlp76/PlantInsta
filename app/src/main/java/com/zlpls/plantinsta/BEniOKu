@@ -29,3 +29,5 @@ hata yapılması. AMK
 
 SPLASH SCREEN yaratmak için,
 https://hasibezafer.medium.com/splash-screen-olu%C5%9Fturman%C4%B1n-do%C4%9Fru-y%C3%B6ntemi-401bbbcab0a9
+
+recyclerview çok uzun sürdü. sebebi yenleme.problem işlemden sonra recycler view i tekrar adapter yukleterek düzeliyor

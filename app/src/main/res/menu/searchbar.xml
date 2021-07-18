@@ -5,16 +5,17 @@
         android:id="@+id/search_bar"
         android:icon="@drawable/ic__search"
         
-        app:showAsAction="ifRoom|collapseActionView"
+        app:showAsAction="ifRoom"
         app:actionViewClass="android.widget.SearchView"
 
         android:title="TODO" />
     <item
         android:id="@+id/favbutton"
         android:icon="@drawable/ic__favorite"
-
+        android:title="TODO"
         app:showAsAction="ifRoom"/>
   <item
+      android:title="TODO"
       android:id="@+id/defavbutton"
       android:icon="@drawable/ic__favoritefilled"
       app:showAsAction="ifRoom"></item>

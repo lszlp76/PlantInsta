@@ -78,76 +78,7 @@ MenuItem sortFav,desortFav,searchItem;
         data =""; // açılışta full gelmesi için data = "" olarak yazılıyor
         setUpRecyclerView(data);
 
-        adapter.setOnItemClickListener(new AddPlantAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                //PlantMOdel plant documentsnapshot ile modelin detaylarını alabilirsin
-                PlantModel plant = documentSnapshot.toObject(PlantModel.class);
-                String id = documentSnapshot.getId();
-                String path = documentSnapshot.getReference().getPath();
-                Intent intent = new Intent(PlantList.this, FeedActivity.class);
-                intent.putExtra("mark", plant.getPlantName());
-                intent.putExtra("postCounterValue", plant.getPlantPostCount());
-                intent.putExtra("plantFavorite",String.valueOf(plant.getPlantFavorite()));
-                startActivity(intent);
-            }
 
-            @Override
-            public void onAddPlantToFavorite(int position) {
-
-
-
-            }
-
-            @Override
-            public void onDelPlantFromFavorite(int position) {
-                ;
-
-            }
-
-            @Override
-
-            public void onDelete(DocumentSnapshot documentSnapshot, int position) {
-                //adapter.deleteItem(position);
-                // Toast.makeText(PlantList.this,
-                //       "Position " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        //uzun basma durumu
-        adapter.setOnItemLongClickListener(new AddPlantAdapter.OnItemLongClickListener() {
-            @Override
-            public void onItemLongClick(DocumentSnapshot documentSnapshot, int position) {
-                PlantModel plant = documentSnapshot.toObject(PlantModel.class);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(PlantList.this);
-                builder.setMessage( " Your " + plant.getPlantName() +" plant diary will be deleted permanently!")
-                        .setTitle("Diary Deleting")
-                        .setIcon(R.drawable.alert);
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        remove(position);
-                        userActions.deleteDocFromFirebase(plant.getPlantName(),"plant",null,plantinstauser);
-                        adapter.notifyDataSetChanged();
-
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        System.out.println("vazgeçti");
-                    }
-                });
-                builder.show();
-            }
-
-            @Override
-            public void onDelete(DocumentSnapshot documentSnapshot, int position) {
-
-            }
-        });
-
-        adapter.notifyDataSetChanged();
 
     }
 
@@ -205,24 +136,9 @@ MenuItem sortFav,desortFav,searchItem;
 
         switch (item.getItemId()) {
             case (R.id.favbutton):
-                Query filteredQueryFavo = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
-                        .whereEqualTo("plantFavorite", true);
 
-                // filtreli options
-                FirestoreRecyclerOptions<PlantModel> filteredListOptionsFav = new FirestoreRecyclerOptions.Builder<PlantModel>()
-                        .setQuery(filteredQueryFavo, PlantModel.class)
-                        .setLifecycleOwner(this)
-                        .build();
 
-                adapter = new AddPlantAdapter(filteredListOptionsFav);
-                System.out.println("query size " + filteredListOptionsFav.getSnapshots().size());
-                recyclerView.setHasFixedSize(true);
-                //recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL));
-
-                recyclerView.setAdapter(adapter);
-
-                adapter.updateOptions(filteredListOptionsFav);
+                setUpRecyclerView("plantFavorite");
 
 
                 desortFav.setVisible(true);
@@ -309,7 +225,18 @@ MenuItem sortFav,desortFav,searchItem;
 // filtreli query
         if (data == "plantFavorite"){
 
+            Query filteredQueryFavo = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
+                    .whereEqualTo("plantFavorite", true);
 
+            // filtreli options
+            FirestoreRecyclerOptions<PlantModel> filteredListOptionsFav = new FirestoreRecyclerOptions.Builder<PlantModel>()
+                    .setQuery(filteredQueryFavo, PlantModel.class)
+                    .setLifecycleOwner(this)
+                    .build();
+
+            adapter = new AddPlantAdapter(filteredListOptionsFav);
+            adapter.updateOptions(filteredListOptionsFav);
+            adapter.notifyDataSetChanged();
         }
         else if ( data == null || data !="" && data !="plantFavorite"){
             Query filteredQuery = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
@@ -332,14 +259,84 @@ MenuItem sortFav,desortFav,searchItem;
 
             adapter.updateOptions(options);
         }
-        recyclerView.setHasFixedSize(true);
+       recyclerView.setHasFixedSize(true);
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL));
 
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
+        adapter.setOnItemClickListener(new AddPlantAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                //PlantMOdel plant documentsnapshot ile modelin detaylarını alabilirsin
+                PlantModel plant = documentSnapshot.toObject(PlantModel.class);
+                String id = documentSnapshot.getId();
+                String path = documentSnapshot.getReference().getPath();
+                Intent intent = new Intent(PlantList.this, FeedActivity.class);
+                intent.putExtra("mark", plant.getPlantName());
+                intent.putExtra("postCounterValue", plant.getPlantPostCount());
+                intent.putExtra("plantFavorite",String.valueOf(plant.getPlantFavorite()));
+                startActivity(intent);
+            }
 
+            @Override
+            public void onAddPlantToFavorite(int position) {
+
+
+
+            }
+
+            @Override
+            public void onDelPlantFromFavorite(int position) {
+                ;
+
+            }
+
+            @Override
+
+            public void onDelete(DocumentSnapshot documentSnapshot, int position) {
+                //adapter.deleteItem(position);
+                // Toast.makeText(PlantList.this,
+                //       "Position " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        //uzun basma durumu
+        adapter.setOnItemLongClickListener(new AddPlantAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(DocumentSnapshot documentSnapshot, int position) {
+                PlantModel plant = documentSnapshot.toObject(PlantModel.class);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(PlantList.this);
+                builder.setMessage( " Your " + plant.getPlantName() +" plant diary will be deleted permanently!")
+                        .setTitle("Diary Deleting")
+                        .setIcon(R.drawable.alert);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        remove(position);
+                        userActions.deleteDocFromFirebase(plant.getPlantName(),"plant",null,plantinstauser);
+                        adapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(adapter);
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        System.out.println("vazgeçti");
+                    }
+                });
+                builder.show();
+            }
+
+            @Override
+            public void onDelete(DocumentSnapshot documentSnapshot, int position) {
+
+            }
+        });
+
+        adapter.notifyDataSetChanged();
 
 
 

@@ -172,7 +172,7 @@ public class FeedActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         isChecked = Boolean.parseBoolean(plantFavorite);
-       itemAdd = menu.findItem(R.id.addFav);
+        itemAdd = menu.findItem(R.id.addFav);
         itemDel = menu.findItem(R.id.delFav);
         if (isChecked) {
             itemAdd.setVisible(false);

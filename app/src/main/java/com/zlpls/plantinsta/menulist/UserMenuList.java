@@ -86,7 +86,7 @@ public class UserMenuList extends AppCompatActivity {
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView text = (TextView) view.findViewById(android.R.id.text1);
-                text.setTextColor(Color.rgb(128, 142, 149));
+                text.setTextColor(Color.rgb(106, 27, 154));
                 return view;
             }
         };

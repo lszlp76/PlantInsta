@@ -14,6 +14,9 @@
         android:icon="@drawable/ic__favorite"
 
         app:showAsAction="ifRoom"/>
-
+  <item
+      android:id="@+id/defavbutton"
+      android:icon="@drawable/ic__favoritefilled"
+      app:showAsAction="ifRoom"></item>
 
 </menu>

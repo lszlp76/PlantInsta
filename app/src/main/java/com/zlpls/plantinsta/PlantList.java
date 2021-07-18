@@ -32,6 +32,8 @@ import com.google.firebase.firestore.Query;
 
 import com.zlpls.plantinsta.visualselection.VisualMainActivity;
 
+import java.util.Locale;
+
 public class PlantList extends AppCompatActivity {
     UserActions userActions = new UserActions();
     FragmentTransaction fragmentTransaction;
@@ -46,7 +48,7 @@ public class PlantList extends AppCompatActivity {
     private AddPlantAdapter adapter;
     FirestoreRecyclerOptions<PlantModel> options ;
 RecyclerView recyclerView;
-
+MenuItem sortFav,desortFav,searchItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,9 +77,77 @@ RecyclerView recyclerView;
 
         data =""; // açılışta full gelmesi için data = "" olarak yazılıyor
         setUpRecyclerView(data);
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
 
+        adapter.setOnItemClickListener(new AddPlantAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                //PlantMOdel plant documentsnapshot ile modelin detaylarını alabilirsin
+                PlantModel plant = documentSnapshot.toObject(PlantModel.class);
+                String id = documentSnapshot.getId();
+                String path = documentSnapshot.getReference().getPath();
+                Intent intent = new Intent(PlantList.this, FeedActivity.class);
+                intent.putExtra("mark", plant.getPlantName());
+                intent.putExtra("postCounterValue", plant.getPlantPostCount());
+                intent.putExtra("plantFavorite",String.valueOf(plant.getPlantFavorite()));
+                startActivity(intent);
+            }
+
+            @Override
+            public void onAddPlantToFavorite(int position) {
+
+
+
+            }
+
+            @Override
+            public void onDelPlantFromFavorite(int position) {
+                ;
+
+            }
+
+            @Override
+
+            public void onDelete(DocumentSnapshot documentSnapshot, int position) {
+                //adapter.deleteItem(position);
+                // Toast.makeText(PlantList.this,
+                //       "Position " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        //uzun basma durumu
+        adapter.setOnItemLongClickListener(new AddPlantAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(DocumentSnapshot documentSnapshot, int position) {
+                PlantModel plant = documentSnapshot.toObject(PlantModel.class);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(PlantList.this);
+                builder.setMessage( " Your " + plant.getPlantName() +" plant diary will be deleted permanently!")
+                        .setTitle("Diary Deleting")
+                        .setIcon(R.drawable.alert);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        remove(position);
+                        userActions.deleteDocFromFirebase(plant.getPlantName(),"plant",null,plantinstauser);
+                        adapter.notifyDataSetChanged();
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        System.out.println("vazgeçti");
+                    }
+                });
+                builder.show();
+            }
+
+            @Override
+            public void onDelete(DocumentSnapshot documentSnapshot, int position) {
+
+            }
+        });
+
+        adapter.notifyDataSetChanged();
 
     }
 
@@ -92,7 +162,9 @@ RecyclerView recyclerView;
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.searchbar, menu);
-        MenuItem searchItem = menu.findItem(R.id.search_bar);
+        searchItem = menu.findItem(R.id.search_bar);
+        sortFav = menu.findItem(R.id.favbutton);
+        desortFav = menu.findItem(R.id.defavbutton);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Search my diary");
 
@@ -106,9 +178,9 @@ RecyclerView recyclerView;
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                data = (newText).toLowerCase().trim();
+                data = (newText).trim();
 
-                System.out.println("data : " + data);
+
 
                 setUpRecyclerView(data);
 
@@ -122,13 +194,44 @@ RecyclerView recyclerView;
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        desortFav.setVisible(false);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected( MenuItem item) {
 
         switch (item.getItemId()) {
             case (R.id.favbutton):
-                setUpRecyclerView("plantFavorite");
+                Query filteredQueryFavo = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
+                        .whereEqualTo("plantFavorite", true);
 
+                // filtreli options
+                FirestoreRecyclerOptions<PlantModel> filteredListOptionsFav = new FirestoreRecyclerOptions.Builder<PlantModel>()
+                        .setQuery(filteredQueryFavo, PlantModel.class)
+                        .setLifecycleOwner(this)
+                        .build();
+
+                adapter = new AddPlantAdapter(filteredListOptionsFav);
+                System.out.println("query size " + filteredListOptionsFav.getSnapshots().size());
+                recyclerView.setHasFixedSize(true);
+                //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL));
+
+                recyclerView.setAdapter(adapter);
+
+                adapter.updateOptions(filteredListOptionsFav);
+
+
+                desortFav.setVisible(true);
+                sortFav.setVisible(false);
                 break;
+            case (R.id.defavbutton):
+                    setUpRecyclerView(data);
+                    sortFav.setVisible(true);
+                    desortFav.setVisible(false);
             default:
                 return false;
         }
@@ -206,40 +309,35 @@ RecyclerView recyclerView;
 // filtreli query
         if (data == "plantFavorite"){
 
-            Query filteredQueryFavo = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
-                    .whereEqualTo("plantFavorite", true);
 
-            // filtreli options
-            FirestoreRecyclerOptions<PlantModel> filteredListOptionsFav = new FirestoreRecyclerOptions.Builder<PlantModel>()
-                    .setQuery(filteredQueryFavo, PlantModel.class)
-                    .setLifecycleOwner(this)
-                    .build();
-
-            adapter = new com.zlpls.plantinsta.AddPlantAdapter(filteredListOptionsFav);
-            System.out.println("query size " + filteredListOptionsFav.getSnapshots().size());
-            adapter.updateOptions(filteredListOptionsFav);
-            adapter.notifyDataSetChanged();
         }
         else if ( data == null || data !="" && data !="plantFavorite"){
             Query filteredQuery = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
+
                     .whereEqualTo("plantUserMail", mAuth.getCurrentUser().getEmail())
-                    .startAt(data).endAt(data + "\uf8ff");;
+                    .startAt( data).endAt(data+ "\uf8ff")
+                    ;
             // filtreli options
             FirestoreRecyclerOptions<PlantModel> filteredListOptions = new FirestoreRecyclerOptions.Builder<PlantModel>()
                     .setQuery(filteredQuery, PlantModel.class)
                     .setLifecycleOwner(this)
                     .build();
 
-            adapter = new com.zlpls.plantinsta.AddPlantAdapter(filteredListOptions);
+            adapter = new AddPlantAdapter(filteredListOptions);
             System.out.println("query size " + filteredListOptions.getSnapshots().size());
             adapter.updateOptions(filteredListOptions);
             adapter.notifyDataSetChanged();
         }else {
-            adapter = new com.zlpls.plantinsta.AddPlantAdapter(options);
+            adapter = new AddPlantAdapter(options);
 
             adapter.updateOptions(options);
         }
+        recyclerView.setHasFixedSize(true);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL));
+
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
 
 
@@ -265,81 +363,7 @@ RecyclerView recyclerView;
         }).attachToRecyclerView(recyclerView);
  */
 
-        adapter.setOnItemClickListener(new AddPlantAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                //PlantMOdel plant documentsnapshot ile modelin detaylarını alabilirsin
-                PlantModel plant = documentSnapshot.toObject(PlantModel.class);
-                String id = documentSnapshot.getId();
-                String path = documentSnapshot.getReference().getPath();
 
-                // Toast.makeText(PlantList.this,
-                //       "Position " + position + " ID " + id + " İsim " + plant.getPlantName()
-                //     , Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(PlantList.this, FeedActivity.class);
-                intent.putExtra("mark", plant.getPlantName());
-                intent.putExtra("postCounterValue", plant.getPlantPostCount());
-                intent.putExtra("plantFavorite",String.valueOf(plant.getPlantFavorite()));
-                startActivity(intent);
-            }
-
-            @Override
-            public void onAddPlantToFavorite(int position) {
-
-
-
-            }
-
-            @Override
-            public void onDelPlantFromFavorite(int position) {
-               ;
-
-            }
-
-            @Override
-
-            public void onDelete(DocumentSnapshot documentSnapshot, int position) {
-                //adapter.deleteItem(position);
-                // Toast.makeText(PlantList.this,
-                //       "Position " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        //uzun basma durumu
-        adapter.setOnItemLongClickListener(new AddPlantAdapter.OnItemLongClickListener() {
-            @Override
-            public void onItemLongClick(DocumentSnapshot documentSnapshot, int position) {
-                PlantModel plant = documentSnapshot.toObject(PlantModel.class);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(PlantList.this);
-                builder.setMessage( " Your " + plant.getPlantName() +" plant diary will be deleted permanently!")
-                        .setTitle("Diary Deleting")
-                        .setIcon(R.drawable.alert);
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        remove(position);
-                        userActions.deleteDocFromFirebase(plant.getPlantName(),"plant",null,plantinstauser);
-                        adapter.notifyDataSetChanged();
-
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        System.out.println("vazgeçti");
-                    }
-                });
-                builder.show();
-            }
-
-            @Override
-            public void onDelete(DocumentSnapshot documentSnapshot, int position) {
-
-            }
-        });
-
-        adapter.notifyDataSetChanged();
     }
     public void remove(int position){
        adapter.notifyItemRemoved(position);

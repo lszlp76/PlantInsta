@@ -60,7 +60,7 @@ public class PlantList extends AppCompatActivity {
     ;
     private CollectionReference plantReference;
     private AddPlantAdapter adapter;
-
+private boolean favIncluded = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +107,7 @@ System.out.println("Sıra on Create");
 
             @Override
             public boolean onQueryTextChange(String newText) {
+             ;
                 data = (newText).trim();
                 setUpRecyclerView(data);
                 return false;
@@ -130,11 +131,13 @@ System.out.println("Sıra on Create");
                 setUpRecyclerView("plantFavorite");
                 desortFav.setVisible(true);
                 sortFav.setVisible(false);
+                favIncluded = true ; // fav butonu seçili
                 break;
             case (R.id.defavbutton):
                 setUpRecyclerView(data);
                 sortFav.setVisible(true);
                 desortFav.setVisible(false);
+                favIncluded = false ;// fav butonu seçili değil
             default:
                 return false;
         }
@@ -178,16 +181,29 @@ System.out.println("Sıra on Create");
 .setLifecycleOwner(this)
                     .build();
         } else if (data == null || data != "" && data != "plantFavorite") {
-            Query mainQuery = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
+              if (favIncluded) { // fav included varsa ,sadece fav lar arasında ara
+                  Query mainQuery = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
+// getMail kullanma yoksa karışıyor
+                            .whereEqualTo("plantFavorite",true)
+                          .whereGreaterThanOrEqualTo("plantName", data)
+                          .whereLessThanOrEqualTo("plantName", data + "\uF8FF");
+
+                  options = new FirestoreRecyclerOptions.Builder<PlantModel>()
+                          .setQuery(mainQuery, PlantModel.class)
+                          .setLifecycleOwner(this)
+                          .build();
+              }else{ // yoksa  ara
+                  Query mainQuery = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
 // getMail kullanma yoksa karışıyor
 
-                    .whereGreaterThanOrEqualTo("plantName", data)
-                    .whereLessThanOrEqualTo("plantName", data + "\uF8FF");
+                          .whereGreaterThanOrEqualTo("plantName", data)
+                          .whereLessThanOrEqualTo("plantName", data + "\uF8FF");
 
-            options = new FirestoreRecyclerOptions.Builder<PlantModel>()
-                    .setQuery(mainQuery, PlantModel.class)
-                    .setLifecycleOwner(this)
-                    .build();
+                  options = new FirestoreRecyclerOptions.Builder<PlantModel>()
+                          .setQuery(mainQuery, PlantModel.class)
+                          .setLifecycleOwner(this)
+                          .build();
+              }
         } else {
             Query mainQuery = plantReference.orderBy("plantName", Query.Direction.ASCENDING);
 

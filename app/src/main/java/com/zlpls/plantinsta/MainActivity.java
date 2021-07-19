@@ -176,7 +176,7 @@ public void gotoSignUp (View view ){
 
     /*FİREBAS AUTH İLE GİRİŞ *******************************/
     public void signIn(View view) {
-        if (!emailText.getText().toString().equals("") && !passwordText.getText().toString().equals(" ")) {
+        if (!emailText.getText().toString().equals("") && !passwordText.getText().toString().equals("")) {
 
             String email = emailText.getText().toString().trim();
             String password = passwordText.getText().toString().trim();

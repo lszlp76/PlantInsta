@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import com.firebase.ui.firestore.ObservableSnapshotArray;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -34,20 +35,22 @@ import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 //1
 public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPlantAdapter.PlantHolder>  {
 
-//implements Filterable
+
+
     private OnItemClickListener listener;
     private OnItemLongClickListener longlistener;
-    Context mContext ;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public AddPlantAdapter(@NonNull FirestoreRecyclerOptions<PlantModel> options )  {
 
         super(options);
 
-      // exampleListFull = new ArrayList<>(exampleList);
 
 
     }
+public void deleteItem (int position){
+        getSnapshots().getSnapshot(position).getReference().delete();
+}
 
     /**
      *  @Override
@@ -142,31 +145,14 @@ public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPla
             holder.mplantAddToFavorite.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic__favorite));
         }
 
-        /*
-       holder.mplantAddToFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-           @Override
-           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-               if (isChecked) {
-                   holder.mplantAddToFavorite.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic__favoritefilled));
-
-               }else {
-                   holder.mplantAddToFavorite.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic__favorite));
-
-               }
-           }
-       });
-*/
     }
 
 
 
-    public void deleteItem(int position) {
-        getSnapshots().getSnapshot(position)
-                .getReference().delete();
-
+    @Override
+    public int getItemCount() {
+        return super.getItemCount();
     }
-
 
     @NonNull
     @Override
@@ -176,6 +162,7 @@ public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPla
         return new PlantHolder(v);
 
     }
+
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
@@ -202,11 +189,7 @@ public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPla
         ImageView mplantAvatarPicture ;
         ToggleButton mplantAddToFavorite;
         TextView mplantPostCount;
-        ImageView mGarbage;
-        //TextView mplantPostNumber;
 
-        //TextView plantPostNumber;
-        @SuppressLint("RestrictedApi")
         public PlantHolder(@NonNull View itemView) {
             super(itemView);
             mplantNameText = itemView.findViewById(R.id.plantnametext);
@@ -216,24 +199,6 @@ public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPla
 
             mplantAddToFavorite = itemView.findViewById(R.id.addtofavorite);
 
-/*
-            mplantAddToFavorite.setOnClickListener(new View.OnClickListener() {
-                                                       @Override
-                                                       public void onClick(View v) {
-                 if  (mplantAddToFavorite.isChecked()){
-                     int position = getAdapterPosition();
-                     if (position != RecyclerView.NO_POSITION && listener != null) {
-                         listener.onAddPlantToFavorite(position);
-                     }
-                 }else {
-                     int position = getAdapterPosition();
-                     if (position != RecyclerView.NO_POSITION && listener != null) {
-                         listener.onDelPlantFromFavorite(position);
-                     }
-                 }
-                 };
-
-                                                   });*/
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -246,18 +211,7 @@ public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPla
                     }
                 }
             });
-           /*
-            mGarbage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && listener != null) {
-                        listener.onDelete(getSnapshots().getSnapshot(position), position);
-                    }
-                }
 
-            });
-            */
 
             // özellik eklemek için mutlaka izle.
             // https://codinginflow.com/tutorials/android/simple-recyclerview-java/part-5-onclicklistener-single-view
@@ -277,19 +231,3 @@ public class AddPlantAdapter extends FirestoreRecyclerAdapter<PlantModel, AddPla
     }
 }
 
-/*
- private String plantAvatar;
-    private String plantDate;
-    private  String plantUserMail;
-class NoteHolder extends RecyclerView.ViewHolder {
-        TextView textViewTitle;
-        TextView textViewDescription;
-        TextView textViewPriority;
-        public NoteHolder(View itemView) {
-            super(itemView);
-            textViewTitle = itemView.findViewById(R.id.text_view_title);
-            textViewDescription = itemView.findViewById(R.id.text_view_description);
-            textViewPriority = itemView.findViewById(R.id.text_view_priority);
-        }
-    }
- */

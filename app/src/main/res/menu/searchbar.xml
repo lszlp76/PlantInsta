@@ -4,8 +4,8 @@
     <item
         android:id="@+id/search_bar"
         android:icon="@drawable/ic__search"
-        
-        app:showAsAction="ifRoom"
+
+        app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView"
 
         android:title="TODO" />
@@ -13,11 +13,11 @@
         android:id="@+id/favbutton"
         android:icon="@drawable/ic__favorite"
         android:title="TODO"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
   <item
       android:title="TODO"
       android:id="@+id/defavbutton"
       android:icon="@drawable/ic__favoritefilled"
-      app:showAsAction="ifRoom"></item>
+      app:showAsAction="always"></item>
 
 </menu>

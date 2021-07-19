@@ -16,8 +16,8 @@ android {
         applicationId "com.zlpls.plantinsta"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 14
-        versionName "1.9"
+        versionCode 16
+        versionName "2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

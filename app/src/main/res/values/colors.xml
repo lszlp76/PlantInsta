@@ -21,5 +21,6 @@
     <color name="windowbackground">#ffffff</color>
     <color name="navigationBarcolor">#FCE4EC</color>
     <color name="textColorPlantinsta">#808e95</color>
+    <color name="lastbackground">#ccff90</color>
 
 </resources>

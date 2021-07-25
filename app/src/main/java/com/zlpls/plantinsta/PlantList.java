@@ -195,9 +195,9 @@ System.out.println("Sıra on Create");
               }else{ // yoksa  ara
                   Query mainQuery = plantReference.orderBy("plantName", Query.Direction.ASCENDING)
 // getMail kullanma yoksa karışıyor
-
-                          .whereGreaterThanOrEqualTo("plantName", data)
-                          .whereLessThanOrEqualTo("plantName", data + "\uF8FF");
+//
+                         .whereGreaterThanOrEqualTo("plantName", data)
+                         .whereLessThanOrEqualTo("plantName", data + "\uF8FF");
 
                   options = new FirestoreRecyclerOptions.Builder<PlantModel>()
                           .setQuery(mainQuery, PlantModel.class)

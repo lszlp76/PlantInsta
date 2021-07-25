@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
@@ -22,7 +23,10 @@ public class FileOperations {
     String filePath;
     Context context;
     String folderName;
+   public String STORAGE_ROOT = (Environment.getExternalStorageDirectory().getAbsolutePath());
 
+   public String CAMERA_IMAGES = STORAGE_ROOT + "/DCIM/Camera";
+   public String PICTURES_ROOT = STORAGE_ROOT + "/DCIM";
     public FileOperations(String filePath) {
         this.filePath = filePath;
     }
@@ -235,5 +239,34 @@ public class FileOperations {
                 System.out.println("file not Deleted :" + contentUri.getPath());
             }
         }
+    }
+
+    public static ArrayList<String> getFilePath(String directory){
+        ArrayList<String> pathArray = new ArrayList<String>();
+        File file = new File(directory);
+        File [] listFiles = file.listFiles();
+        for ( int i=0;i<listFiles.length;i++){
+
+            if (listFiles[i].isFile()){
+                pathArray.add(listFiles[i].getAbsolutePath());
+            }
+        }
+        return pathArray;
+
+
+
+
+    }
+    public static ArrayList<String> getDirectoryPath(String directory){
+        ArrayList<String> pathArray = new ArrayList<String>();
+        File file = new File(directory);
+        File [] listFiles = file.listFiles();
+        for ( int i=0;i<listFiles.length;i++){
+
+            if (listFiles[i].isDirectory()){
+                pathArray.add(listFiles[i].getAbsolutePath());
+            }
+        }
+        return pathArray;
     }
 }

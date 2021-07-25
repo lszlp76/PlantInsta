@@ -121,6 +121,7 @@ public class TakePhotoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         userActions = new UserActions();
 
+
     }
 
 
@@ -178,7 +179,7 @@ public class TakePhotoFragment extends Fragment {
                 try {
                     System.out.println("ekrana dokunuldu");
                     //ekrana zoom seviyesini yazdırma
-                    zoomvalue.setText("Zoom "+String.valueOf(zoom_level*100/80));
+                    zoomvalue.setText("Zoom %"+String.valueOf(zoom_level*100/80));
                     CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
                     CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
                     float maxzoom = (characteristics.get(CameraCharacteristics.SCALER_AVAILABLE_MAX_DIGITAL_ZOOM)) * 10;

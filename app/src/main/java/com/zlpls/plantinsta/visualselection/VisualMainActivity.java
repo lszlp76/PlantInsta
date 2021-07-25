@@ -8,6 +8,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -34,7 +39,7 @@ public class VisualMainActivity extends AppCompatActivity {
     private final String[] mNames = null;
     private ViewPager viewPager;
     private ViewPageAdapter viewPageAdapter;
-
+String title ;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +47,11 @@ public class VisualMainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_visual_main);
         ActionBar actionBar = getSupportActionBar();
-        String title = "Take photo / picture";
+        title = "Take photo ";
+
         actionBar.setTitle(title);
         getSupportActionBar().setTitle(title);
+
 /*
  if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
@@ -79,6 +86,32 @@ public class VisualMainActivity extends AppCompatActivity {
         fromList = intentf.getIntExtra("fromList", 0);
         UserActions.fromList = fromList;
         userActions.setFromList(fromList);
+
+
+        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tabs.getTabAt(0).isSelected()){
+                    title = "Take photo ";
+                    System.out.println("camera");
+                    actionBar.setTitle(title);
+                    getSupportActionBar().setTitle(title);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                title = "Choose picture ";
+                actionBar.setTitle(title);
+                getSupportActionBar().setTitle(title);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
         //FloatingActionButton fab = findViewById(R.id.fab);
 /*
 fab.setOnClickListener(new View.OnClickListener() {
@@ -105,5 +138,8 @@ fab.setOnClickListener(new View.OnClickListener() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
     */
+public  boolean  onCreateOptionsMenu(@NonNull Menu menu) {
 
+    return true;
+}
 }

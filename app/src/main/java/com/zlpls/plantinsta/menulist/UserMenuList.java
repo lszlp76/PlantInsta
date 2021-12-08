@@ -64,7 +64,7 @@ public class UserMenuList extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
 
-        actionBar.setTitle("PlantInsta");
+        actionBar.setTitle("Neşeli Bahçe");
 
         BottomNavigationView bottomAppBar = findViewById(R.id.bottom_navigation);
 

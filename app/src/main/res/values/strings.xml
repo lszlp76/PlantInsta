@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PlantInsta</string>
+    <string name="app_name">Neşeli Bahçe</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="content_description_hamburger">menu</string>
@@ -29,7 +29,7 @@
         <item>How to use?</item>
         <item>Policy</item>
         <item>About</item>
-        <item>Neseli Bahce Workshop</item>
+        <item>Neşeli Bahçe Workshop</item>
         <item>Sign out</item>
 
     </string-array>

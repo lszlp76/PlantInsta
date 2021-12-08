@@ -73,7 +73,7 @@ private boolean favIncluded = false;
 
 
 
-        String title = "My PlantInsta Diaries";
+        String title = "My Plants";
 
         getSupportActionBar().setTitle(title);
         BottomNavigationView bottomAppBar = findViewById(R.id.bottom_navigation);

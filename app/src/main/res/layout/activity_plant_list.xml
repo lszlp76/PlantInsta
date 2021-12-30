@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:background ="#ccff90">
+    android:background ="@color/lastbackground">
     <!-- Note: A RecyclerView can also be used
     android:background="@drawable/ic_ciceksvg"-->
     <androidx.core.widget.NestedScrollView

@@ -9,18 +9,21 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFffffff</color>
     <color name="turkuaz">#880e4f</color>
-    <color name="primaryColor">#f57c00</color>
-    <color name="primaryVariant">#f57c00</color>
-    <color name="primaryDarkColor">#bb4d00</color>
+    <!-- Ana çerçeve rengi-->
+    <color name="primaryColor">#880e4f</color>
+    <!-- Alt navigasyon rengi-->
+    <color name="primaryVariant">#880e4f</color>
+    <color name="primaryDarkColor">#6f224b</color>
     <color name="secondaryColor">#880e4f</color>
     <color name="secondaryLightColor">#bc477b</color>
     <color name="secondaryDarkColor">#560027</color>
-    <color name="primaryTextColor">#689f38</color>
+    <color name="primaryTextColor">#4f880e</color>
     <color name="secondaryTextColor">#689f38</color>
     <color name="colorSplash">#eeffff</color>
     <color name="windowbackground">#ffffff</color>
     <color name="navigationBarcolor">#FCE4EC</color>
     <color name="textColorPlantinsta">#808e95</color>
-    <color name="lastbackground">#ccff90</color>
+    <color name="lastbackground">#eeffff</color>
+    <color name="cardview">#558b2f</color>
 
 </resources>

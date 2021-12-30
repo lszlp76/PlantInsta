@@ -81,6 +81,7 @@ String title ;
         tabs.setBackgroundColor(Color.parseColor("#eeffff"));
 
         tabs.setSelectedTabIndicatorColor(Color.parseColor("#4FC3F7"));
+        tabs.setSelectedTabIndicatorGravity(TabLayout.INDICATOR_GRAVITY_TOP);
 //#c8e6c9
         Intent intentf = getIntent();
         fromList = intentf.getIntExtra("fromList", 0);

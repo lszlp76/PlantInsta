@@ -1,14 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.PlantInsta" parent="Theme.AppCompat.DayNight.DarkActionBar">
+    <style name="Theme.PlantInsta" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryVariant">@color/primaryVariant</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/primaryVariant</item>
+        <item name="android:windowBackground">@color/windowbackground</item>
 
 
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/onboardingcolor</item>
+        <item name="colorSecondary">@color/purple_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/teal_200</item>
         <!-- Status bar color. -->
@@ -16,34 +18,77 @@
         <item name="actionOverflowMenuStyle">@style/CMOptionsMenu</item>
         <!-- Customize your theme here. -->
     </style>
+
     <style name="CMOptionsMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
 
         <item name="android:textColor">#ffffff</item>
-        <item name="android:popupBackground">#ffffff</item>
-        <item name="android:actionBarSize">5dp</item>
+        <item name="android:popupBackground">#c41061</item>
+        <item name="android:actionBarSize">3dp</item>
 
     </style>
+
+    <style name="splashScreenTheme" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/field</item>
+    </style>
+
+    <style name="Theme.Signinup2" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/turkuaz</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/purple_200</item>
+        <!-- Status bar color. -->
+        <!--item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item-->
+        <item name="actionOverflowMenuStyle">@style/CMOptionsMenu</item>
+        <!-- Customize your theme here. -->
+
+    </style>
+
     <style name="Theme.Signinup">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-
+    <style name="Theme.Signinup.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Signinup.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!-- Alert Dialog -->
     <style name="MyThemeOverlayAlertDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MyApp.Dialog.Rounded</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MyApp.Dialog.Rounded
+        </item>
     </style>
+
     <style name="ShapeAppearanceOverlay.MyApp.Dialog.Rounded" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">18dp</item>
     </style>
 
     <style name="Theme"></style>
+
     <style name="roundedImageViewRounded">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
+    <style name="Theme.PlantInsta.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.PlantInsta.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.PlantInsta.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- SplashScreen theme. -->
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splashscreen</item>
+    </style>
+    <style name="mySpinnerItemStyle" parent="Base.Widget.AppCompat.Spinner">
+        <item name="android:backgroundTint">@color/windowbackground</item>
+    </style>
+
 </resources>

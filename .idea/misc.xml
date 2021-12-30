@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/activity_add_new_plant.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/activity_camera2api.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/activity_feed.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/activity_fullimage.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/activity_new_member_sign_up.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/activity_plant_list.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/activity_slide.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/activity_upload_plant_follow.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/activity_user_menu_list.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/activity_visual_main.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/background.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/content_plant_list.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/content_user_menu_list.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/fragment_galery.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/fragment_take_photo.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/pictureview.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/plant_item.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/recycler_row.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/slide_screen.xml" value="0.1" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/layout/spinner_style_file.xml" value="0.1796875" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/menu/bottommenu.xml" value="0.1796875" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/menu/favmenu.xml" value="0.1796875" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/menu/searchbar.xml" value="0.1796875" />
+        <entry key="..\:/Users/ulaso/AndroidStudioProjects/PlantInsta/app/src/main/res/menu/spinnermenu.xml" value="0.1796875" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

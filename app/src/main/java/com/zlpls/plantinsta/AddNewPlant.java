@@ -157,11 +157,28 @@ public class AddNewPlant extends AppCompatActivity {
         /* Galerifragmane veya TakePhtofragmandan gelen selectedİmagefromuser bilgisi */
         Intent intent = getIntent();
         selectedImageFromUser = intent.getStringExtra("selectedimagefromuser");
-        // gelen resmi imageivew ekle
+        // gelen resmi imageivew ekle 30.12.2021
+        /*
+        bu PARÇA ,çekilen resmin addimageview da görülmesini garanti etmek için
+        yapıldı.
+         */
+        File f = new File(selectedImageFromUser);
+        Uri contentUri = Uri.fromFile(f);
+        addplantimageView.setImageURI(contentUri);
+       /*
+
+         BU KISIM ÇEKİLEN RESMİ ÜZERİNE GÖSTERMİYOR
         Picasso.get()
+
                 .load("file:" + selectedImageFromUser)
                 .into(addplantimageView);
 
+        /*
+
+        dosya yolunu yaz deneme için
+
+         */
+        System.out.println("Dosya yolu :-->" + selectedImageFromUser);
         // önce dösyaya çevir
         File bitmapFile = new File(selectedImageFromUser);
         //sonra bitmap e çevir

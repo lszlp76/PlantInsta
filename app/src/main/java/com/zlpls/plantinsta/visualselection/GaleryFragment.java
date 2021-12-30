@@ -36,7 +36,10 @@ import com.zlpls.plantinsta.UploadPlantFollow;
 import com.zlpls.plantinsta.UserActions;
 
 import java.io.File;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -325,10 +328,40 @@ menu.clear();
     }
     private ArrayList<String> getFilePath(String directory){
        pictureList.clear();
+/*
+pictureList 'i sıralı hale getirmek
+ */
+
+
+
+
+/*
+
+ */
         ArrayList<String> pathArray = new ArrayList<String>();
         pictureList = new ArrayList<>();
         File file = new File(directory);
+
         File [] listFiles = file.listFiles();
+        // listFiles olarak klasöredeki tüm dosyaları modifiskasyon tarihine göre
+        // sort etme içi Arrays.sort kullanılıyor.
+        Arrays.sort(listFiles,new Comparator() {
+            public int compare (Object o1, Object o2){
+
+                if (((File)o1).lastModified()> ((File)o2).lastModified()) {
+                    return -1;
+                }else if (((File)o1).lastModified()<((File)o2).lastModified())
+                {
+                    return +1;
+                }
+                else {
+                    return 0;
+                }
+            }
+
+        });
+
+
         for ( int i=0;i<listFiles.length;i++){
 
             if (listFiles[i].isFile()
@@ -339,10 +372,8 @@ menu.clear();
                                     listFiles[i].getName().endsWith(".gif")
 
             ))
-            {
-
-                pathArray.add(listFiles[i].getAbsolutePath());
-                pictureList.add(new Picture(listFiles[i].getAbsolutePath()));
+            { pathArray.add(listFiles[i].getAbsolutePath());
+               pictureList.add(new Picture(listFiles[i].getAbsolutePath()));
             }
         }
         return pathArray;

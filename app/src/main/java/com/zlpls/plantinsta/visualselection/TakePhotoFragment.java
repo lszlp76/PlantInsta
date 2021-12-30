@@ -279,7 +279,7 @@ public class TakePhotoFragment extends Fragment {
         @Override
         public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
             super.onCaptureCompleted(session, request, result);
-            Toast.makeText(getContext().getApplicationContext(), "Saved:" + file, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getContext().getApplicationContext(), "Saved:" + file, Toast.LENGTH_SHORT).show();
             createCameraPreview();
         }
     };
@@ -354,6 +354,9 @@ public class TakePhotoFragment extends Fragment {
             // Orientation
             int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
+            /* önce sil*/
+           // fileOperations.deleteImageFileInStorage(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/PlantInsta.jpg"));
+
             final File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/PlantInsta.jpg");
 
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
@@ -363,12 +366,13 @@ public class TakePhotoFragment extends Fragment {
                         @Override
                         public void run() {
                             Image image = null;
-
                             image = reader.acquireLatestImage();
                             ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+                            buffer.clear();
                             byte[] bytes = new byte[buffer.capacity()];
+
                             buffer.get(bytes);
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                           // Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
                             //int degree = fileOperations.getImageRotation(photoFile);
                            // bitmap = fileOperations.getBitmapRotatedByDegree(bitmap, 90);
@@ -377,7 +381,9 @@ public class TakePhotoFragment extends Fragment {
                              *  imageView.setImageBitmap(bitmap); ekle
                              */
                        try {
-                                save(bytes);
+
+                           Save(bytes);
+
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -387,8 +393,8 @@ public class TakePhotoFragment extends Fragment {
                     });
                 }
 
-                private void save(byte[] bytes) throws IOException {
-                    OutputStream output = null;
+                private void Save(byte[] bytes) throws IOException {
+                    FileOutputStream output = null;
                     try {
                         output = new FileOutputStream(file);
                         output.write(bytes);
@@ -409,7 +415,7 @@ public class TakePhotoFragment extends Fragment {
                 {
                     super.onCaptureCompleted(session, request, result);
 
-                   // Toast.makeText(getActivity(), "Saved:" + file, Toast.LENGTH_SHORT).show();
+                   //Toast.makeText(getActivity(), "Saved:" + file, Toast.LENGTH_SHORT).show();
 
                     switch (userActions.getFromList()) {
                         case 0:
@@ -428,7 +434,7 @@ public class TakePhotoFragment extends Fragment {
 
                     }
 
-                    createCameraPreview(); // bu da devam etmek için
+                   // createCameraPreview(); // bu da devam etmek için
                 }
             };
             cameraDevice.createCaptureSession(outputSurfaces, new CameraCaptureSession.StateCallback() {
@@ -473,7 +479,7 @@ public class TakePhotoFragment extends Fragment {
 
                 @Override
                 public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    Toast.makeText(getActivity(), "Configuration change", Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(getActivity(), "Configuration change", Toast.LENGTH_SHORT).show();
                 }
             }, null);
         } catch (CameraAccessException e) {

@@ -231,9 +231,9 @@ public class FileOperations {
         File f = new File(image.getAbsolutePath());
 
         Uri contentUri = Uri.fromFile(f);
-        File fdelete = new File(Objects.requireNonNull(contentUri.getPath()));
-        if (fdelete.exists()) {
-            if (fdelete.delete()) {
+        File filetodelete = new File(Objects.requireNonNull(contentUri.getPath()));
+        if (filetodelete.exists()) {
+            if (filetodelete.delete()) {
                 System.out.println("file Deleted :" + contentUri.getPath());
             } else {
                 System.out.println("file not Deleted :" + contentUri.getPath());

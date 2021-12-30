@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background ="#ccff90"
+    android:background ="@color/lastbackground"
 
     tools:context="com.zlpls.plantinsta.MainActivity">
     <!--BURADA GUİDLİEN LAR İLE BİR ALAN YARATIP RELATİVE LAYOUT U

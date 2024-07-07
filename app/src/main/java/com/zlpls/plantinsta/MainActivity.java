@@ -107,7 +107,11 @@ public void gotoSignUp (View view ){
 
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                System.out.println("HATA :- > "+e.getMessage());
+                Toast.makeText(getApplicationContext(),
+
+
+                        e.getMessage(), Toast.LENGTH_LONG).show();
                 // [START_EXCLUDE]
 
                 // [END_EXCLUDE]

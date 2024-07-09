@@ -11,6 +11,7 @@ android {
         // Or, if you prefer, you can continue to check for errors in release builds,
         // but continue the build even when errors are found:
         abortOnError false
+
     }
     defaultConfig {
         applicationId "com.zlpls.plantinsta"
@@ -32,6 +33,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.zlpls.plantinsta'
 }
 
 dependencies {
@@ -87,7 +89,8 @@ dependencies {
 
     // FirebaseUI for Firebase Auth
     implementation 'com.firebaseui:firebase-ui-auth:7.1.1'
-
+//admobs
+    //implementation 'com.google.android.gms:play-services-ads:23.2.0'
     // FirebaseUI for Cloud Storage
     implementation 'com.firebaseui:firebase-ui-storage:7.1.1'
 // ZOOM yapmak için
